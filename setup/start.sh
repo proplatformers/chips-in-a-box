@@ -39,6 +39,9 @@ if [ -f /etc/komodoinabox.conf ]; then
 
 	# Load the old .conf file to get existing configuration options loaded
 	# into variables with a DEFAULT_ prefix.
+	echo "pre grep"
+	grep "IP" /etc/komodoinabox.conf  > /tmp/BSK
+	echo "post grep"
 	cat /etc/komodoinabox.conf | sed s/^/DEFAULT_/ > /tmp/komodoinabox.prev.conf
 	source /tmp/komodoinabox.prev.conf
 	rm -f /tmp/komodoinabox.prev.conf
@@ -99,6 +102,8 @@ PUBLIC_IPV6=$PUBLIC_IPV6
 PRIVATE_IP=$PRIVATE_IP
 PRIVATE_IPV6=$PRIVATE_IPV6
 EOF
+
+cat /tmp/BSK >> /etc/komodoinabox.conf
 
 if [ ! -z "${PROVIDE_ADMIN:-}" ];then
   echo "Providing console"
