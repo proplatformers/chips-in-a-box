@@ -4,7 +4,8 @@
 INSTALL_DIR=`pwd`
 
 source setup/functions.sh # load our functions
-
+source setup/console.sh 
+exit
 # Check system setup: Are we running as root on Ubuntu 18.04 on a
 # machine with enough memory? Is /tmp mounted with exec.
 # If not, this shows an error and exits.
@@ -32,7 +33,7 @@ export NCURSES_NO_UTF8_ACS=1
 
 #SKIP THIS - file will never be called cakeshop1.conf
 # Recall the last settings used if we're running this a second time.
-if [ -f /etc/komodoinabox.conf ]; then
+if [ -f ~/.komodoinabox.conf ]; then
 	# Run any system migrations before proceeding. Since this is a second run,
 	# we assume we have Python already installed.
 #	setup/migrate.py --migrate || exit 1
@@ -40,11 +41,12 @@ if [ -f /etc/komodoinabox.conf ]; then
 	# Load the old .conf file to get existing configuration options loaded
 	# into variables with a DEFAULT_ prefix.
 	echo "pre grep"
-	grep "IP" /etc/komodoinabox.conf  > /tmp/BSK
+	#BSKs=$(grep "IP" ~/.komodoinabox.conf)
+	#cat $BSKs > ~/.BSK
 	echo "post grep"
-	cat /etc/komodoinabox.conf | sed s/^/DEFAULT_/ > /tmp/komodoinabox.prev.conf
-	source /tmp/komodoinabox.prev.conf
-	rm -f /tmp/komodoinabox.prev.conf
+	cat ~/.komodoinabox.conf | sed s/^/DEFAULT_/ > ~/.komodoinabox.prev.conf
+	source ~/.komodoinabox.prev.conf
+	rm -f ~/.komodoinabox.prev.conf
 	PROVIDE_ADMIN=1
 else
 	FIRST_TIME_SETUP=1
@@ -52,12 +54,12 @@ fi
 
 # Put a start script in a global location. We tell the user to run 'cakeshop'
 # in the first dialog prompt, so we should do this before that starts.
-cat > /usr/local/bin/komodoinabox << EOF;
+cat > ~/bin/komodoinabox << EOF;
 #!/bin/bash
 cd `pwd`
 source setup/start.sh
 EOF
-chmod +x /usr/local/bin/komodoinabox
+chmod +x ~/bin/komodoinabox
 
 # Ask the user for the PRIMARY_HOSTNAME, PUBLIC_IP, and PUBLIC_IPV6,
 # if values have not already been set in environment variables. When running
@@ -74,28 +76,26 @@ if [ -z "${SKIP_NETWORK_CHECKS:-}" ]; then
 fi
 fi
 
-# Create the STORAGE_USER and STORAGE_ROOT directory if they don't already exist.
-# If the STORAGE_ROOT is missing the komodoinabox.version file that lists a
-# migration (schema) number for the files stored there, assume this is a fresh
-# installation to that directory and write the file to contain the current
-# migration number for this version of Cakeshop-in-a-Box.
-if ! id -u $STORAGE_USER >/dev/null 2>&1; then
-	useradd -m $STORAGE_USER
-fi
-if [ ! -d $STORAGE_ROOT ]; then
-	mkdir -p $STORAGE_ROOT
-fi
-#if [ ! -f $STORAGE_ROOT/komodoinabox.version ]; then
-#	echo $(setup/migrate.py --current) > $STORAGE_ROOT/komodoinabox.version
-#	chown $STORAGE_USER.$STORAGE_USER $STORAGE_ROOT/komodoinabox.version
+## Create the STORAGE_USER and STORAGE_ROOT directory if they don't already exist.
+## If the STORAGE_ROOT is missing the komodoinabox.version file that lists a
+## migration (schema) number for the files stored there, assume this is a fresh
+## installation to that directory and write the file to contain the current
+## migration number for this version of Cakeshop-in-a-Box.
+#if ! id -u $STORAGE_USER >/dev/null 2>&1; then
+#	useradd -m $STORAGE_USER
 #fi
+#if [ ! -d $STORAGE_ROOT ]; then
+#	mkdir -p $STORAGE_ROOT
+#fi
+##if [ ! -f $STORAGE_ROOT/komodoinabox.version ]; then
+##	echo $(setup/migrate.py --current) > $STORAGE_ROOT/komodoinabox.version
+##	chown $STORAGE_USER.$STORAGE_USER $STORAGE_ROOT/komodoinabox.version
+##fi
 
 
 # Save the global options in /etc/komodoinabox.conf so that standalone
 # tools know where to look for data.
-cat > /etc/komodoinabox.conf << EOF;
-STORAGE_USER=$STORAGE_USER
-STORAGE_ROOT=$STORAGE_ROOT
+cat > ~/.komodoinabox.conf << EOF;
 PRIMARY_HOSTNAME=$PRIMARY_HOSTNAME
 PUBLIC_IP=$PUBLIC_IP
 PUBLIC_IPV6=$PUBLIC_IPV6
@@ -103,7 +103,9 @@ PRIVATE_IP=$PRIVATE_IP
 PRIVATE_IPV6=$PRIVATE_IPV6
 EOF
 
-cat /tmp/BSK >> /etc/komodoinabox.conf
+if [ ! -z /tmp/BSK ] ; then
+  cat /tmp/BSK >> ~/.komodoinabox.conf
+fi
 
 if [ ! -z "${PROVIDE_ADMIN:-}" ];then
   echo "Providing console"

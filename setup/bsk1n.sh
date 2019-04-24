@@ -98,6 +98,7 @@ letter of the choice as a hot key, or the \n\
 number keys 1-9 to choose an option.\n\
 Choose the TASK" 25 120 14 \
 MINER-GETINFO "BSK-1node $TICKER mining getinfo" \
+MINER-GETMININGINFO "BSK-1node $TICKER mining getmininginfo" \
 MINING-START "BSK-1node $TICKER start mining" \
 MINING-STOP "BSK-1node $TICKER mining stop" \
 IMPORT-DEV-WALLET "BSK-1node $TICKER import the dev wallet of this node" \
@@ -112,6 +113,7 @@ menuitem=$(<"${INPUT}")
 case $menuitem in
 	NEW-NODE-MINER) bsk1n_mining_spinup;;
 	MINER-GETINFO) bsk1n_mining_getinfo;;
+	MINER-GETMININGINFO) bsk1n_mining_getmininginfo;;
 	MINING-START) bsk1n_mining_start;;
 	MINING-STOP) bsk1n_mining_stop;;
 	IMPORT-DEV-WALLET) bsk1n_mining_importdevwallet;;
@@ -127,8 +129,8 @@ function bsk1n_seed_getinfo {
   METHOD="getinfo"
   if ps aux | grep -i $TICKER | grep -v grep ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -142,8 +144,23 @@ function bsk1n_mining_getinfo {
   METHOD="getinfo"
   if ps aux | grep -i $TICKER | grep coinData ; then
     source ~/coinData/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
+    message_box "$METHOD" "$MSGBOXINFO"
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+
+}
+
+function bsk1n_mining_getmininginfo {
+  CHAIN=$TICKER
+  METHOD="getmininginfo"
+  if ps aux | grep -i $TICKER | grep coinData ; then
+    source ~/coinData/$CHAIN/$CHAIN.conf
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -163,7 +180,7 @@ function bsk1n_seed_spinup {
       sleep 1
       echo $TICKER
       sleep 1
-      echo "BSK_$TICKER=-ac_supply=$SUPPLY" >> /etc/komodoinabox.conf
+      echo "BSK_$TICKER=-ac_supply=$SUPPLY" >> ~/.komodoinabox.conf
       hide_output komodod -ac_name=$TICKER -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY &>/dev/null &
       sleep 1
       sleep 1
@@ -200,7 +217,7 @@ function bsk1n_mining_spinup {
 	      fi
 
       done
-      mkdir ~/coinData/$TICKER
+      mkdir -p ~/coinData/$TICKER
       cp ~/.komodo/$TICKER/$TICKER.conf ~/coinData/$TICKER
       sed -i 's/^\(rpcuser=\).*$/rpcuser=newname/' ~/coinData/$TICKER/$TICKER.conf
       sed -i 's/^\(rpcpassword=\).*$/rpcpassword=newpass/' ~/coinData/$TICKER/$TICKER.conf
@@ -209,7 +226,7 @@ function bsk1n_mining_spinup {
       echo "Created datadir for single host BSK"
       sleep 2
     fi
-    hide_output komodod -ac_name=$TICKER -ac_supply=1000 -datadir=/root/coinData/$TICKER -addnode=localhost & #>/dev/null &
+    hide_output komodod -ac_name=$TICKER -ac_supply=1000 -datadir=$HOME/coinData/$TICKER -addnode=localhost & #>/dev/null &
     echo "Finished mining node setup"
     echo "Ready to enable mining..."
     cat ~/coinData/$TICKER/$TICKER.conf
@@ -219,7 +236,7 @@ function bsk1n_mining_spinup {
 
 function bsk1n_mining_importdevwallet {
   if ps aux | grep -i $TICKER | grep coinData ; then
-    source /root/coinData/$TICKER/$TICKER.conf
+    source ~/coinData/$TICKER/$TICKER.conf
     source ~/.devwallet
     echo "Importing $DEVADDRESS"
     sleep 2
@@ -235,7 +252,7 @@ function bsk1n_mining_start {
   if ps aux | grep -i $TICKER | grep coinData ; then
 	  echo "Staring mining on $TICKER"
 	  sleep 3
-    source /root/coinData/$TICKER/$TICKER.conf
+    source ~/coinData/$TICKER/$TICKER.conf
     RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"setgenerate\", \"params\": [true,1]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
     echo $RESULT
     sleep 1
@@ -247,7 +264,7 @@ function bsk1n_mining_start {
 
 function bsk1n_mining_stop {
   if ps aux | grep -i $TICKER | grep coinData ; then
-    source /root/coinData/$TICKER/$TICKER.conf
+    source ~/coinData/$TICKER/$TICKER.conf
     RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"setgenerate\", \"params\": [false]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
     #echo $RESULT
     sleep 1
@@ -259,7 +276,7 @@ function bsk1n_mining_stop {
 
 function bsk1n_mining_shutdown {
   if ps aux | grep -i $TICKER | grep coinData ; then
-    source /root/coinData/$TICKER/$TICKER.conf
+    source ~/coinData/$TICKER/$TICKER.conf
     RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"stop\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
     echo $RESULT
     sleep 1
@@ -270,7 +287,7 @@ function bsk1n_mining_shutdown {
 }
 
 function bsk1n_seed_shutdown {
-  source /root/.komodo/$TICKER/$TICKER.conf
+  source ~/.komodo/$TICKER/$TICKER.conf
   RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"stop\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
   echo $RESULT
   sleep 1

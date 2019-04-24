@@ -482,10 +482,10 @@ function setup_devwallet {
   DEVWIF=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"dumpprivkey\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
   DEVPUBKEY=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"validateaddress\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result.pubkey'`
   #echo "{\"devaddress\": \"$DEVADDRESS\",\"devwif\": \"$DEVWIF\", \"devpubkey\": \"$DEVPUBKEY\"}" > /root/.devwallet
-  echo "DEVADDRESS=$DEVADDRESS" > /root/.devwallet
-  echo "DEVWIF=$DEVWIF" >> /root/.devwallet
-  echo "DEVPUBKEY=$DEVPUBKEY" >> /root/.devwallet
-  cat /root/.devwallet
+  echo "DEVADDRESS=$DEVADDRESS" > ~/.devwallet
+  echo "DEVWIF=$DEVWIF" >> ~/.devwallet
+  echo "DEVPUBKEY=$DEVPUBKEY" >> ~/.devwallet
+  cat ~/.devwallet
   echo "Completed DEV wallet setup"
   sleep 1
   RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "stop", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
