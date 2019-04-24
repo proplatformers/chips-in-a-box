@@ -32,16 +32,16 @@ export NCURSES_NO_UTF8_ACS=1
 
 #SKIP THIS - file will never be called cakeshop1.conf
 # Recall the last settings used if we're running this a second time.
-if [ -f /etc/cakeshopinabox.conf ]; then
+if [ -f /etc/komodoinabox.conf ]; then
 	# Run any system migrations before proceeding. Since this is a second run,
 	# we assume we have Python already installed.
 #	setup/migrate.py --migrate || exit 1
 
 	# Load the old .conf file to get existing configuration options loaded
 	# into variables with a DEFAULT_ prefix.
-	cat /etc/cakeshopinabox.conf | sed s/^/DEFAULT_/ > /tmp/cakeshopinabox.prev.conf
-	source /tmp/cakeshopinabox.prev.conf
-	rm -f /tmp/cakeshopinabox.prev.conf
+	cat /etc/komodoinabox.conf | sed s/^/DEFAULT_/ > /tmp/komodoinabox.prev.conf
+	source /tmp/komodoinabox.prev.conf
+	rm -f /tmp/komodoinabox.prev.conf
 	PROVIDE_ADMIN=1
 else
 	FIRST_TIME_SETUP=1
@@ -49,12 +49,12 @@ fi
 
 # Put a start script in a global location. We tell the user to run 'cakeshop'
 # in the first dialog prompt, so we should do this before that starts.
-cat > /usr/local/bin/cakeshopinabox << EOF;
+cat > /usr/local/bin/komodoinabox << EOF;
 #!/bin/bash
 cd `pwd`
 source setup/start.sh
 EOF
-chmod +x /usr/local/bin/cakeshopinabox
+chmod +x /usr/local/bin/komodoinabox
 
 # Ask the user for the PRIMARY_HOSTNAME, PUBLIC_IP, and PUBLIC_IPV6,
 # if values have not already been set in environment variables. When running
@@ -72,7 +72,7 @@ fi
 fi
 
 # Create the STORAGE_USER and STORAGE_ROOT directory if they don't already exist.
-# If the STORAGE_ROOT is missing the cakeshopinabox.version file that lists a
+# If the STORAGE_ROOT is missing the komodoinabox.version file that lists a
 # migration (schema) number for the files stored there, assume this is a fresh
 # installation to that directory and write the file to contain the current
 # migration number for this version of Cakeshop-in-a-Box.
@@ -82,15 +82,15 @@ fi
 if [ ! -d $STORAGE_ROOT ]; then
 	mkdir -p $STORAGE_ROOT
 fi
-#if [ ! -f $STORAGE_ROOT/cakeshopinabox.version ]; then
-#	echo $(setup/migrate.py --current) > $STORAGE_ROOT/cakeshopinabox.version
-#	chown $STORAGE_USER.$STORAGE_USER $STORAGE_ROOT/cakeshopinabox.version
+#if [ ! -f $STORAGE_ROOT/komodoinabox.version ]; then
+#	echo $(setup/migrate.py --current) > $STORAGE_ROOT/komodoinabox.version
+#	chown $STORAGE_USER.$STORAGE_USER $STORAGE_ROOT/komodoinabox.version
 #fi
 
 
-# Save the global options in /etc/cakeshopinabox.conf so that standalone
+# Save the global options in /etc/komodoinabox.conf so that standalone
 # tools know where to look for data.
-cat > /etc/cakeshopinabox.conf << EOF;
+cat > /etc/komodoinabox.conf << EOF;
 STORAGE_USER=$STORAGE_USER
 STORAGE_ROOT=$STORAGE_ROOT
 PRIMARY_HOSTNAME=$PRIMARY_HOSTNAME
