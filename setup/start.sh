@@ -108,16 +108,14 @@ else
   echo "First install"
   sleep 2
   # Start service configuration.
-  init_pubkey
-  source setup/pubkey.sh
-  source setup/system.sh
+ # source setup/system.sh
   #source setup/ssl.sh
   #source setup/web.sh
   #source setup/management.sh
   #source setup/munin.sh
-  source setup/nanomsg.sh
-  source setup/komodo.sh
-  setup_devwallet
+ # source setup/nanomsg.sh
+ # source setup/komodo.sh
+ # setup_devwallet
   source setup/console.sh
 fi
 # Wait for the management daemon to start...
