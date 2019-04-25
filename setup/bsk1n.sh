@@ -201,6 +201,7 @@ function bsk1n_mining_spinup {
 	    echo "$TICKER already been a mining node, no need to mkdir"
 	    sleep 1
     else
+      input_box "$TICKER" "How many $TICKER coins?\n\nNote: Must be same as seed node" "1000" SUPPLY
       NEWRPCPORT=$(shuf -i 25000-25500 -n 1)
       TRYAGAIN=1
       while [ $TRYAGAIN -eq 1 ]
@@ -219,14 +220,16 @@ function bsk1n_mining_spinup {
       done
       mkdir -p ~/coinData/$TICKER
       cp ~/.komodo/$TICKER/$TICKER.conf ~/coinData/$TICKER
-      sed -i 's/^\(rpcuser=\).*$/rpcuser=newname/' ~/coinData/$TICKER/$TICKER.conf
-      sed -i 's/^\(rpcpassword=\).*$/rpcpassword=newpass/' ~/coinData/$TICKER/$TICKER.conf
+      newrpcuser=$(dd bs=24 count=1 if=/dev/urandom | base64 | tr +/ _.)
+      newrpcpassword=$(dd bs=24 count=1 if=/dev/urandom | base64 | tr +/ _.)
+      sed -i "s/^\(rpcuser=\).*$/rpcuser=$newrpcuser/" ~/coinData/$TICKER/$TICKER.conf
+      sed -i "s/^\(rpcpassword=\).*$/rpcpassword=$newrpcpassword/" ~/coinData/$TICKER/$TICKER.conf
       echo "port=$NEWPORT" >> ~/coinData/$TICKER/$TICKER.conf
       sed -i "s/^\(rpcport=\).*$/rpcport=$NEWRPCPORT/" ~/coinData/$TICKER/$TICKER.conf
       echo "Created datadir for single host BSK"
       sleep 2
     fi
-    hide_output komodod -ac_name=$TICKER -ac_supply=1000 -datadir=$HOME/coinData/$TICKER -addnode=localhost & #>/dev/null &
+    hide_output komodod -ac_name=$TICKER -ac_supply=$SUPPLY -datadir=$HOME/coinData/$TICKER -addnode=localhost & #>/dev/null &
     echo "Finished mining node setup"
     echo "Ready to enable mining..."
     cat ~/coinData/$TICKER/$TICKER.conf
