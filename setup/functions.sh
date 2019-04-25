@@ -250,7 +250,7 @@ function init_pubkey {
 
 #y23y
 function start_hush3 {
-	source /root/.devwallet
+	source ~/.devwallet
 	echo "Starting HUSH3..."
 	sleep 2
 	if ! ps aux | grep -i "[h]ush" ; then
@@ -273,7 +273,7 @@ function start_hush3 {
 #y23y
 function start_pirate {
 	CHAIN="PIRATE"
-	source /root/.devwallet
+	source !/.devwallet
 	echo "Starting $CHAIN..."
 	sleep 2
 	if ! ps aux | grep -i "[p]irate" ; then
@@ -297,7 +297,7 @@ function start_pirate {
 #y23y
 function start_beer {
 	CHAIN="BEER"
-	source /root/.devwallet
+	source ~/.devwallet
 	echo "Starting $CHAIN..."
 	sleep 2
 	if ! ps aux | grep -i "[b]eer" ; then
@@ -320,7 +320,7 @@ function start_beer {
 #y23y
 function start_pizza {
 	CHAIN="PIZZA"
-	source /root/.devwallet
+	source ~/.devwallet
 	echo "Starting $CHAIN..."
 	sleep 2
 	if ! ps aux | grep -i "[p]izza" ; then
@@ -343,7 +343,7 @@ function start_pizza {
 #y23y
 function start_kmdice {
 	CHAIN="KMDICE"
-	source /root/.devwallet
+	source ~/.devwallet
 	echo "Starting $CHAIN..."
 	sleep 2
 	if ! ps aux | grep -i "[k]mdice" ; then
@@ -437,8 +437,8 @@ function listunspent_regtest {
   if ps aux | grep -i [r]egtest ; then
     NAME=$(ps aux | grep [r]egtest | cut -d= -f2| cut -d' ' -f1)
     source ~/.komodo/$NAME/$NAME.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"listunspent\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.listunspent
-    LISTUNSPENT=`cat /root/.listunspent`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"listunspent\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.listunspent
+    LISTUNSPENT=`cat ~/.listunspent`
     message_box "UTXOs" "$LISTUNSPENT"
   else
     echo "Nothing to query - start devmode..."
@@ -451,8 +451,8 @@ function generate_regtest {
     NAME=$(ps aux | grep [r]egtest | cut -d= -f2| cut -d' ' -f1)
     source ~/.komodo/$NAME/$NAME.conf
     input_box "Generate blocks" "How many blocks to generate?" "1" GENERATE
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"generate\", \"params\": [$GENERATE]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.generate
-    GENERATE=`cat /root/.generate`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"generate\", \"params\": [$GENERATE]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.generate
+    GENERATE=`cat ~/.generate`
     message_box "Blockhash(es)" "$GENERATE"
   else
     echo "Nothing to query - start devmode..."
@@ -464,8 +464,8 @@ function getinfo_regtest {
   if ps aux | grep -i [r]egtest ; then
     NAME=$(ps aux | grep [r]egtest | cut -d= -f2| cut -d' ' -f1)
     source ~/.komodo/$NAME/$NAME.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getinfo", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.getinfo
-    GETINFO=`cat /root/.getinfo`
+    curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getinfo", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.getinfo
+    GETINFO=`cat ~/.getinfo`
     message_box "getinfo" "$GETINFO"
   else
     echo "Nothing to query - start devmode..."
@@ -481,7 +481,6 @@ function setup_devwallet {
   DEVADDRESS=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getnewaddress", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
   DEVWIF=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"dumpprivkey\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
   DEVPUBKEY=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"validateaddress\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result.pubkey'`
-  #echo "{\"devaddress\": \"$DEVADDRESS\",\"devwif\": \"$DEVWIF\", \"devpubkey\": \"$DEVPUBKEY\"}" > /root/.devwallet
   echo "DEVADDRESS=$DEVADDRESS" > ~/.devwallet
   echo "DEVWIF=$DEVWIF" >> ~/.devwallet
   echo "DEVPUBKEY=$DEVPUBKEY" >> ~/.devwallet
@@ -543,8 +542,8 @@ function getpeerinfo_hush3 {
   METHOD="getpeerinfo"
   if ps aux | grep -i [h]ush3 ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -558,8 +557,8 @@ function getpeerinfo_pirate {
   METHOD="getpeerinfo"
   if ps aux | grep -i [p]irate ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -573,8 +572,8 @@ function getpeerinfo_beer {
   METHOD="getpeerinfo"
   if ps aux | grep -i [b]eer ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -588,8 +587,8 @@ function getpeerinfo_pizza {
   METHOD="getpeerinfo"
   if ps aux | grep -i [p]izza ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -603,8 +602,8 @@ function getpeerinfo_kmdice {
   METHOD="getpeerinfo"
   if ps aux | grep -i [k]mdice ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -618,8 +617,8 @@ function getmininginfo_hush3 {
   METHOD="getmininginfo"
   if ps aux | grep -i [h]ush3 ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -633,8 +632,8 @@ function getmininginfo_pirate {
   METHOD="getmininginfo"
   if ps aux | grep -i [p]irate ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -648,8 +647,8 @@ function getmininginfo_kmdice {
   METHOD="getmininginfo"
   if ps aux | grep -i [k]mdice ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -663,8 +662,8 @@ function getinfo_beer {
   METHOD="getinfo"
   if ps aux | grep -i [b]eer ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -678,8 +677,8 @@ function getinfo_pizza {
   METHOD="getinfo"
   if ps aux | grep -i [p]izza ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -693,8 +692,8 @@ function getinfo_kmdice {
   METHOD="getinfo"
   if ps aux | grep -i [k]mdice ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -708,8 +707,8 @@ function getinfo_pirate {
   METHOD="getinfo"
   if ps aux | grep -i [p]irate ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
@@ -725,8 +724,8 @@ function getinfo_hush3 {
     echo "HUSH3 is running..."
     sleep 2
     source ~/.komodo/$CHAIN/$CHAIN.conf
-    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > /root/.$METHOD
-    MSGBOXINFO=`cat /root/.$METHOD`
+    curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
+    MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
   else
     echo "Nothing to query - start $CHAIN..."
