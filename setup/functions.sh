@@ -510,9 +510,11 @@ function start_regtest {
   if ps aux | grep -i [r]egtest ; then
     NAME=$(ps aux | grep [r]egtest | cut -d= -f2| cut -d' ' -f1)
     source ~/.komodo/$NAME/$NAME.conf
-    WALLET1=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getnewaddress", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
-    echo "New wallet address: $WALLET1"
-    input_box "LEG4" "New wallet is" "$WALLET1" WALLET1B
+#    WALLET1=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getnewaddress", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+#    echo "New wallet address: $WALLET1"
+#    input_box "LEG4" "New wallet is" "$WALLET1" WALLET1B
+#    sleep 3
+    echo "Regtest already running"
     sleep 3
   else
     input_box "LEGS1" "How many coins?" "1000" SUPPLY
@@ -528,6 +530,8 @@ function start_regtest {
     hide_output komodod -regtest -ac_name=$NAME -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY &
     sleep 1
     sleep 1
+    echo "Waiting for 3 more seconds"
+    sleep 3
     source ~/.komodo/$NAME/$NAME.conf
     echo "Using $rpcuser & $rpcpassword with wif $DEVWIF"
     sleep 2
