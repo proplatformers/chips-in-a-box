@@ -1,7 +1,7 @@
 function submenu_pizza {
 while true
 do
-
+CHAIN=PIZZA
 ### display main menu ###
 dialog --clear  --help-button --backtitle "Cakeshop Console" \
 --title "[ P I Z Z A - C O N S O L E ]" \
@@ -9,13 +9,13 @@ dialog --clear  --help-button --backtitle "Cakeshop Console" \
 letter of the choice as a hot key, or the \n\
 number keys 1-9 to choose an option.\n\
 Choose the TASK" 25 60 14 \
-PIZZA_GETINFO "Get Info - PIZZA getinfo method" \
-PIZZA_LISTUNSPENT "List Unspent UTXO - PIZZA listunspent" \
-PIZZA_GETPEERINFO "Get Network Info - PIZZA getpeerinfo" \
-PIZZA_GETMININGINFO "Get Mining Info - PIZZA getmininginfo" \
+GETINFO "Get Info - $CHAIN getinfo method" \
+LISTUNSPENT "List Unspent UTXO - $CHAIN listunspent" \
+GETPEERINFO "Get Network Info - $CHAIN getpeerinfo" \
+GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 PIZZA_DELETE "Experimental - Delete blockchain data" \
-PIZZA_START "Start PIZZA" \
-PIZZA_STOP "Stop PIZZA" \
+PIZZA_START "Start $CHAIN" \
+STOP "Stop $CHAIN" \
 Back "Back a menu" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -25,12 +25,11 @@ menuitem=$(<"${INPUT}")
 case $menuitem in
 	PIZZA_DELETE) delete_blockchain_data_pizza;;
 	PIZZA_START) start_pizza;;
-	PIZZA_STOP) stop_pizza;;
-	PIZZA_GETINFO) getinfo_pizza;;
-	PIZZA_GENERATE) generate_pizza;;
-	PIZZA_LISTUNSPENT) listunspent_pizza;;
-	PIZZA_GETPEERINFO) getpeerinfo_pizza;;
-	PIZZA_GETMININGINFO) getmininginfo_pizza;;
+	STOP) stop;;
+	GETINFO) getinfo;;
+	LISTUNSPENT) listunspent;;
+	GETPEERINFO) getpeerinfo;;
+	GETMININGINFO) getmininginfo;;
 	Back) echo "Bye"; break;;
 esac
 done
