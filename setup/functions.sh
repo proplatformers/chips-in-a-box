@@ -7,6 +7,7 @@ source setup/komodo-api/control.sh
 source setup/komodo-api/wallet.sh
 source setup/komodo-api/network.sh
 source setup/komodo-api/mining.sh
+source setup/komodo-api/util.sh
 
 function hide_output {
 	# This function hides the output of a command unless the command fails

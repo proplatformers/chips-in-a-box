@@ -1,4 +1,5 @@
 function submenu_pizza {
+source ~/.devwallet
 while true
 do
 CHAIN=PIZZA
@@ -11,6 +12,8 @@ number keys 1-9 to choose an option.\n\
 Choose the TASK" 25 60 14 \
 GETINFO "Get Info - $CHAIN getinfo method" \
 LISTUNSPENT "List Unspent UTXO - $CHAIN listunspent" \
+SENDTOADDRESS "Send $CHAIN to a transparent address" \
+VALIDATEADDRESS "Validate this nodes dev wallet: $DEVADDRESS" \
 GETPEERINFO "Get Network Info - $CHAIN getpeerinfo" \
 GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 PIZZA_DELETE "Experimental - Delete blockchain data" \
@@ -30,6 +33,7 @@ case $menuitem in
 	LISTUNSPENT) listunspent;;
 	GETPEERINFO) getpeerinfo;;
 	GETMININGINFO) getmininginfo;;
+	SENDTOADDRESS) sendtoaddress;;
 	Back) echo "Bye"; break;;
 esac
 done
