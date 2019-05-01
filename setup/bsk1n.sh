@@ -81,7 +81,7 @@ menuitem=$(<"${INPUT}")
 case $menuitem in
 	NEW-NODE-SEED) bsk1n_seed_spinup;;
 	SEED-GETINFO) bsk1n_seed_getinfo;;
-  COINGW) coingw;;
+  	COINGW) coingw;;
 	SHUTDOWN-NODE-SEED) bsk1n_seed_shutdown;;
 	Back) echo "Bye"; break;;
 esac
@@ -105,6 +105,7 @@ MINING-START "BSK-1node $CHAIN start mining" \
 MINING-STOP "BSK-1node $CHAIN mining stop" \
 IMPORT-DEV-WALLET "BSK-1node $CHAIN import the dev wallet of this node" \
 NEW-NODE-MINER "Create a BSK-1node $CHAIN mining node" \
+COINGW "Experimental: Coin Gateway" \
 SHUTDOWN-NODE-MINER "Shutdown $CHAIN mining node" \
 Back "Back a menu" 2>"${INPUT}"
 
@@ -118,6 +119,7 @@ case $menuitem in
 	MINER-GETMININGINFO) bsk1n_mining_getmininginfo;;
 	MINING-START) bsk1n_mining_start;;
 	MINING-STOP) bsk1n_mining_stop;;
+  	COINGW) coingw;;
 	IMPORT-DEV-WALLET) bsk1n_mining_importdevwallet;;
 	SHUTDOWN-NODE-MINER) bsk1n_mining_shutdown;;
 	Back) echo "Bye"; break;;
