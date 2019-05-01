@@ -3,7 +3,7 @@
 #####################################################
 INSTALL_DIR=`pwd`
 sudo apt-get update
-sudo apt-get -y install libgomp1 jq 
+sudo apt-get -y install libgomp1 jq dialog
 source setup/functions.sh # load our functions
 mkdir -p ~/bin
 
