@@ -14,6 +14,7 @@ GETINFO "Get Info - $CHAIN getinfo method" \
 LISTUNSPENT "List Unspent UTXO - $CHAIN listunspent" \
 SENDTOADDRESS "Send $CHAIN to a transparent address" \
 VALIDATEADDRESS "Validate this nodes dev wallet: $DEVADDRESS" \
+IMPORTPRIVKEY "Import private key (WIF) of the dev wallet $DEVADDRESS" \
 GETPEERINFO "Get Network Info - $CHAIN getpeerinfo" \
 GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 PIZZA_DELETE "Experimental - Delete blockchain data" \
@@ -33,6 +34,7 @@ case $menuitem in
 	LISTUNSPENT) listunspent;;
 	GETPEERINFO) getpeerinfo;;
 	GETMININGINFO) getmininginfo;;
+	IMPORTPRIVKEY) importprivkey;;
 	SENDTOADDRESS) sendtoaddress;;
 	VALIDATEADDRESS) validateaddress;;
 	Back) echo "Bye"; break;;
