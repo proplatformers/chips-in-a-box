@@ -8,6 +8,7 @@ source setup/komodo-api/wallet.sh
 source setup/komodo-api/network.sh
 source setup/komodo-api/mining.sh
 source setup/komodo-api/util.sh
+source setup/cc/tokens.sh
 
 function hide_output {
 	# This function hides the output of a command unless the command fails
@@ -390,4 +391,11 @@ function delete_blockchain_data_kmdice {
     echo "$CHAIN is running.  Stop $CHAIN before doing this..."
     sleep 2
   fi
+}
+
+function coingw {
+  tokencreate
+	sleep 5
+
+
 }
