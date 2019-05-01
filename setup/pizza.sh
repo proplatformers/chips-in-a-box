@@ -20,6 +20,7 @@ GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 PIZZA_DELETE "Experimental - Delete blockchain data" \
 PIZZA_START "Start $CHAIN" \
 STOP "Stop $CHAIN" \
+SENDALLTOSELF "Shortcut: usess sendtoaddress to send all funds to self after getbalance" \
 Back "Back a menu" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -36,6 +37,7 @@ case $menuitem in
 	GETMININGINFO) getmininginfo;;
 	IMPORTPRIVKEY) importprivkey;;
 	SENDTOADDRESS) sendtoaddress;;
+	SENDALLTOSELF) sendalltoself;;
 	VALIDATEADDRESS) validateaddress;;
 	Back) echo "Bye"; break;;
 esac
