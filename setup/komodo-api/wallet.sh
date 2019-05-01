@@ -14,7 +14,7 @@ function listunspent {
 function sendtoaddress {
 	KIABMETHOD="sendtoaddress"
 	if ps aux | grep komodod | grep $CHAIN | grep -v grep ; then
-    source ~/.komodo/$NAME/$NAME.conf
+    source ~/.komodo/$CHAIN/$CHAIN.conf
 	input_box "Send Question" "How many coins to send, must be less than your balance?" "1" SENDAMOUNT
 	input_box "Send Question" "Send to which transparent address?" "1" SENDTOADDRESS
     curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$KIABMETHOD\", \"params\": [\"$SENDTOADDRESS\", $SENDAMOUNT, \"optional comment\", \"optional comment-to\", true]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.kiabresponse

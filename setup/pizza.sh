@@ -34,6 +34,7 @@ case $menuitem in
 	GETPEERINFO) getpeerinfo;;
 	GETMININGINFO) getmininginfo;;
 	SENDTOADDRESS) sendtoaddress;;
+	VALIDATEADDRESS) validateaddress;;
 	Back) echo "Bye"; break;;
 esac
 done
