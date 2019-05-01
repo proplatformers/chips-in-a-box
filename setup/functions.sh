@@ -277,7 +277,7 @@ function start_hush3 {
 #y23y
 function start_pirate {
 	CHAIN="PIRATE"
-	source !/.devwallet
+	source ~/.devwallet
 	echo "Starting $CHAIN..."
 	sleep 2
 	if ! ps aux | grep -i "[p]irate" ; then

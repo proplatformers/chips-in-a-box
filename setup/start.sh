@@ -4,8 +4,9 @@
 INSTALL_DIR=`pwd`
 
 source setup/functions.sh # load our functions
+mkdir -p ~/bin
 
-# Put a start script in a global location. We tell the user to run 'cakeshop'
+# Put a start script in a global location. We tell the user to run 'komodoinabox'
 # in the first dialog prompt, so we should do this before that starts.
 cat > ~/bin/komodoinabox << EOF;
 #!/bin/bash

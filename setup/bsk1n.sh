@@ -186,7 +186,7 @@ function bsk1n_seed_spinup {
       sleep 1
       source ~/.komodo/$TICKER/$TICKER.conf
       echo "Finishing seed node setup"
-      sleep 3
+      sleep 5
       curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"importprivkey\", \"params\": [\"$DEVWIF\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'
       sleep 1
     fi
