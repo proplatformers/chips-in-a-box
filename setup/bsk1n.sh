@@ -185,7 +185,7 @@ function bsk1n_seed_spinup {
       echo $CHAIN
       sleep 1
       echo "BSK_$CHAIN=-ac_supply=$SUPPLY" >> ~/.komodoinabox.conf
-      hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY &>/dev/null &
+      hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY -ac_cc=2 &>/dev/null &
       sleep 1
       sleep 1
       source ~/.komodo/$CHAIN/$CHAIN.conf
@@ -233,7 +233,7 @@ function bsk1n_mining_spinup {
       echo "Created datadir for single host BSK"
       sleep 2
     fi
-    hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -datadir=$HOME/coinData/$CHAIN -addnode=localhost & #>/dev/null &
+    hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -datadir=$HOME/coinData/$CHAIN -addnode=localhost -ac_cc=2 & #>/dev/null &
     echo "Finished mining node setup"
     echo "Ready to enable mining..."
     cat ~/coinData/$CHAIN/$CHAIN.conf
