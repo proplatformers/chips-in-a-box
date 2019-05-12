@@ -185,7 +185,7 @@ function start_regtest {
 #    sleep 1
     echo $NAME
     sleep 1
-    hide_output komodod -regtest -ac_name=$NAME -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY &
+    hide_output komodod -regtest -ac_name=$NAME -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY -ac_cc=2 &
     sleep 1
     sleep 1
     echo "Waiting for 3 more seconds"
