@@ -8,6 +8,7 @@ source setup/komodo-api/wallet.sh
 source setup/komodo-api/network.sh
 source setup/komodo-api/mining.sh
 source setup/komodo-api/util.sh
+source setup/komodo-api/rawtransactions.sh
 source setup/cc/tokens.sh
 
 function hide_output {

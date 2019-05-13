@@ -7,6 +7,7 @@ source setup/pirate.sh
 source setup/maint.sh
 source setup/beer.sh
 source setup/pizza.sh
+source setup/tokens-console.sh
 
 while true
 do

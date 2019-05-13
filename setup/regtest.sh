@@ -20,6 +20,7 @@ LISTUNSPENT "List Unspent UTXO - single user dev chain listunspent" \
 SENDTODEV1 "Send some coins to the same address" \
 SENDALLTODEV1 "Send all coins to the same address" \
 SENDTODEV2 "Send some coins to another address"  \
+TOKENS "Use the tokenization system on this blockchain" \
 Back "Back a menu" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -36,9 +37,20 @@ case $menuitem in
 	SENDTODEV1) sendtoself_regtest;;
 	SENDALLTODEV1) sendalltoself_regtest;;
 	SENDTODEV2) sendtoother_regtest;;
+  TOKENS) tokens_regtest;;
 	Back) echo "Bye"; break;;
 esac
 done
+}
+
+function tokens_regtest {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i [r]egtest ; then
+    NAME=$(ps aux | grep [r]egtest | cut -d= -f2| cut -d' ' -f1)
+    source ~/.komodo/$NAME/$NAME.conf
+    CHAIN=$NAME
+    submenu_tokens
+  fi  
 }
 
 function listunspent_regtest {
@@ -184,6 +196,7 @@ function start_regtest {
 #    echo $WALLETS
 #    sleep 1
     echo $NAME
+    CHAIN=$NAME
     sleep 1
     hide_output komodod -regtest -ac_name=$NAME -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY -ac_cc=2 &
     sleep 1
