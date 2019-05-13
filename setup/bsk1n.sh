@@ -81,7 +81,7 @@ menuitem=$(<"${INPUT}")
 case $menuitem in
 	NEW-NODE-SEED) bsk1n_seed_spinup;;
 	SEED-GETINFO) bsk1n_seed_getinfo;;
-  	COINGW) coingw;;
+  COINGW) coingw;;
 	SHUTDOWN-NODE-SEED) bsk1n_seed_shutdown;;
 	Back) echo "Bye"; break;;
 esac
@@ -155,7 +155,6 @@ function bsk1n_mining_getinfo {
     echo "Nothing to query - start $CHAIN..."
     sleep 1
   fi
-
 }
 
 function bsk1n_mining_getmininginfo {
@@ -170,7 +169,6 @@ function bsk1n_mining_getmininginfo {
     echo "Nothing to query - start $CHAIN..."
     sleep 1
   fi
-
 }
 
 function bsk1n_seed_spinup {
