@@ -72,6 +72,8 @@ SEED-GETINFO "BSK-1node $CHAIN seed getinfo" \
 NEW-NODE-SEED "Create a BSK-1node $CHAIN seed node" \
 SHUTDOWN-NODE-SEED "Shutdown $CHAIN seed node" \
 COINGW "Experimental: Coin Gateway" \
+TOKENS "Use the tokenization system on this blockchain" \
+WALLET "Use this node $CHAIN wallet" \
 Back "Back a menu" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -83,6 +85,8 @@ case $menuitem in
 	SEED-GETINFO) bsk1n_seed_getinfo;;
   COINGW) coingw;;
 	SHUTDOWN-NODE-SEED) bsk1n_seed_shutdown;;
+  TOKENS) bsk1n_seed_tokens;;
+  WALLET) bsk1n_seed_wallet;;
 	Back) echo "Bye"; break;;
 esac
 done
@@ -105,6 +109,8 @@ MINING-START "BSK-1node $CHAIN start mining" \
 MINING-STOP "BSK-1node $CHAIN mining stop" \
 IMPORT-DEV-WALLET "BSK-1node $CHAIN import the dev wallet of this node" \
 NEW-NODE-MINER "Create a BSK-1node $CHAIN mining node" \
+TOKENS "Use the tokenization system on this blockchain" \
+WALLET "Use this node $CHAIN wallet" \
 COINGW "Experimental: Coin Gateway" \
 SHUTDOWN-NODE-MINER "Shutdown $CHAIN mining node" \
 Back "Back a menu" 2>"${INPUT}"
@@ -119,9 +125,11 @@ case $menuitem in
 	MINER-GETMININGINFO) bsk1n_mining_getmininginfo;;
 	MINING-START) bsk1n_mining_start;;
 	MINING-STOP) bsk1n_mining_stop;;
-  	COINGW) coingw;;
+  COINGW) coingw;;
 	IMPORT-DEV-WALLET) bsk1n_mining_importdevwallet;;
 	SHUTDOWN-NODE-MINER) bsk1n_mining_shutdown;;
+  TOKENS) bsk1n_mining_tokens;;
+  WALLET) bsk1n_mining_wallet;;
 	Back) echo "Bye"; break;;
 esac
 done
@@ -203,7 +211,6 @@ function bsk1n_mining_spinup {
 	    echo "$CHAIN already been a mining node, no need to mkdir"
 	    sleep 1
     else
-      input_box "$CHAIN" "How many $CHAIN coins?\n\nNote: Must be same as seed node" "1000" SUPPLY
       NEWRPCPORT=$(shuf -i 25000-25500 -n 1)
       TRYAGAIN=1
       while [ $TRYAGAIN -eq 1 ]
@@ -231,7 +238,9 @@ function bsk1n_mining_spinup {
       echo "Created datadir for single host BSK"
       sleep 2
     fi
-    hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -datadir=$HOME/coinData/$CHAIN -addnode=localhost -ac_cc=2 & #>/dev/null &
+    source $HOME/.dev2wallet
+    input_box "$CHAIN" "How many $CHAIN coins?\n\nNote: Must be same as seed node" "1000" SUPPLY
+    hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -datadir=$HOME/coinData/$CHAIN -addnode=localhost -pubkey=$DEVPUBKEY -ac_cc=2 & #>/dev/null &
     echo "Finished mining node setup"
     echo "Ready to enable mining..."
     cat ~/coinData/$CHAIN/$CHAIN.conf
@@ -242,7 +251,7 @@ function bsk1n_mining_spinup {
 function bsk1n_mining_importdevwallet {
   if ps aux | grep -i $CHAIN | grep coinData ; then
     source ~/coinData/$CHAIN/$CHAIN.conf
-    source ~/.devwallet
+    source ~/.dev2wallet
     echo "Importing $DEVADDRESS"
     sleep 2
     curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"importprivkey\", \"params\": [\"$DEVWIF\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'
@@ -297,3 +306,52 @@ function bsk1n_seed_shutdown {
   echo $RESULT
   sleep 1
 }
+
+function bsk1n_seed_wallet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
+    submenu_wallet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function bsk1n_seed_tokens {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
+    submenu_tokens
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function bsk1n_mining_wallet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/coinData/$CHAIN/$CHAIN.conf
+    source $HOME/.dev2wallet
+    submenu_wallet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function bsk1n_mining_tokens {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/coinData/$CHAIN/$CHAIN.conf
+    source $HOME/.dev2wallet
+    submenu_tokens
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+

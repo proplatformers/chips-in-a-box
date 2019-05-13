@@ -400,3 +400,63 @@ function coingw {
 
 
 }
+
+function setup_dev2wallet {
+  echo "Entering DEV2 wallet setup"
+  if ! ps aux | grep -i [r]egtest | grep -v dialog | grep -vi cakeshopdevsetup ; then
+  echo "Starting DEV2 wallet setup"
+  hide_output komodod -regtest -ac_name=CAKESHOPDEVSETUP -ac_supply=500 &
+  sleep 7
+  source ~/.komodo/CAKESHOPDEVSETUP/CAKESHOPDEVSETUP.conf
+  DEVADDRESS=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getnewaddress", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+  DEVWIF=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"dumpprivkey\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+  DEVPUBKEY=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"validateaddress\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result.pubkey'`
+  echo "DEVADDRESS=$DEVADDRESS" > ~/.dev2wallet
+  echo "DEVWIF=$DEVWIF" >> ~/.dev2wallet
+  echo "DEVPUBKEY=$DEVPUBKEY" >> ~/.dev2wallet
+  cat ~/.dev2wallet
+  echo "Completed OTHER wallet setup"
+  sleep 1
+  RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "stop", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+  echo "Result: $RESULT"
+  cd $INSTALL_DIR
+  else
+    echo "CAKESHOPSETUP server cannot start because another dev mode (regtest) server is running."
+    sleep 1
+    echo "Only 1 regtest mode allowed."
+    sleep 1
+    echo "Please stop the other regtest mode server"
+    sleep 2
+  fi
+  sleep 2
+}
+
+function setup_devwallet {
+  echo "Entering DEV wallet setup"
+  if ! ps aux | grep -i [r]egtest | grep -v dialog | grep -vi cakeshopdevsetup ; then
+    echo "Starting DEV wallet setup"
+    hide_output komodod -regtest -ac_name=CAKESHOPDEVSETUP -ac_supply=500 &
+    sleep 7
+    source ~/.komodo/CAKESHOPDEVSETUP/CAKESHOPDEVSETUP.conf
+    DEVADDRESS=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "getnewaddress", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+    DEVWIF=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"dumpprivkey\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+    DEVPUBKEY=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"validateaddress\", \"params\": [\"$DEVADDRESS\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result.pubkey'`
+    echo "DEVADDRESS=$DEVADDRESS" > ~/.devwallet
+    echo "DEVWIF=$DEVWIF" >> ~/.devwallet
+    echo "DEVPUBKEY=$DEVPUBKEY" >> ~/.devwallet
+    cat ~/.devwallet
+    echo "Completed DEV wallet setup"
+    sleep 1
+    RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "stop", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
+    echo "Result: $RESULT"
+    cd $INSTALL_DIR
+  else
+    echo "CAKESHOPSETUP server cannot start because another dev mode (regtest) server is running."
+    sleep 1
+    echo "Only 1 regtest mode allowed."
+    sleep 1
+    echo "Please stop the other regtest mode server"
+    sleep 2
+  fi
+  sleep 2
+}

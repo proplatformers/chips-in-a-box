@@ -2,6 +2,9 @@ cd $INSTALL_DIR
 if [ ! -f ~/.devwallet ]; then
   setup_devwallet
 fi
+if [ ! -f ~/.dev2wallet ]; then
+  setup_dev2wallet
+fi
 source setup/wallet-console.sh
 source setup/kmdice.sh
 source setup/pirate.sh

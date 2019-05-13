@@ -17,6 +17,7 @@ SENDALLSELF "sendtoaddress - send all native $CHAIN coins to yourself" \
 SENDALLADDRESS "sendtoaddress - send all native $CHAIN coins to an address" \
 TOKENADDRESS "tokenaddress - get address information for tokens on $CHAIN for this pubkey" \
 BALANCE "getbalance - get the balance for this node $CHAIN wallet" \
+VALIDATE "validateaddress - validate the address on this $CHAIN node wallet" \
 Back "Back" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -30,6 +31,7 @@ case $menuitem in
     SENDALLTO) sendallto;;
 	TOKENADDRESS) tokenaddress;;
     BALANCE) getbalance;;
+	VALIDATE) validateaddress;;
 	Back) echo "Back"; break;;
 esac
 done

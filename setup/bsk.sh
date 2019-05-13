@@ -37,6 +37,7 @@ function wallet {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
     submenu_wallet
   else
     echo "Nothing to query - start $CHAIN..."
@@ -48,6 +49,7 @@ function tokens {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
+    source ~/.devwallet
     submenu_tokens
   else
     echo "Nothing to query - start $CHAIN..."
