@@ -1,7 +1,7 @@
 
 function bsk1n {
 
-input_box "Blockchain Starter Kit - Step 1" "CHAIN for chain?" "HELLOWORLD" CHAIN
+input_box "Blockchain Starter Kit - Step 1" "Name of chain?" "HELLOWORLD" CHAIN
 
 while true
 do

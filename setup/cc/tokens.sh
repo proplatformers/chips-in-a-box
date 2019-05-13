@@ -21,7 +21,7 @@ function tokencreate {
     source ~/.komodo/$CHAIN/$CHAIN.conf
     echo "Using $CHAIN configuration"
     sleep 1
-    echo "    curl -s --user $rpcuser:$rpcpassword --data-binary \"{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$KIABMETHOD\", \"params\": [\"$TOKENNAME\", $TOKENSUPPLY, \"$TOKENDESCRIPTION\"]}\" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/"
+    echo "curl -s --user $rpcuser:$rpcpassword --data-binary \"{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$KIABMETHOD\", \"params\": [\"$TOKENNAME\", \"$TOKENSUPPLY\", \"$TOKENDESCRIPTION\"]}\" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/"
     echo "Token details - name: $TOKENNAME  supply: $TOKENSUPPLY   description: $TOKENDESCRIPTION"
     sleep 3
     curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$KIABMETHOD\", \"params\": [\"$TOKENNAME\", \"$TOKENSUPPLY\", \"$TOKENDESCRIPTION\"]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result.hex' > ~/.kiabresponse

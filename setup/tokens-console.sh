@@ -358,6 +358,10 @@ function submenu_tokeninfo {
     #
 
     echo "Got the list of tokens"
+    # TODO
+    # add if statement grep for null in ~/.kiabresponse
+    # if responds then message box saying no tokens to list
+    # get info on or interact with, exit to last menu
 
     cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse

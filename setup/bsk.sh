@@ -1,7 +1,7 @@
 
 function bsk {
 
-input_box "Blockchain Starter Kit - Step 1" "CHAIN for chain?" "HELLOWORLD" CHAIN
+input_box "Blockchain Starter Kit - Step 1" "Name of chain?" "HELLOWORLD" CHAIN
 
 while true
 do
@@ -15,6 +15,7 @@ letter of the choice as a hot key. \n\
 Choose the Seed or Mining Menu" 25 120 14 \
 SEED-MENU "BSK - $CHAIN seed control" \
 MINING-MENU "BSK - $CHAIN mining control" \
+TOKENS "Use the tokenization system on this blockchain" \
 Back "Back a menu" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -24,12 +25,22 @@ menuitem=$(<"${INPUT}")
 case $menuitem in
 	SEED-MENU) bsk_seed_menu;;
 	MINING-MENU) bsk_mining_menu;;
+  TOKENS) tokens;;
 	Back) echo "Bye"; break;;
 esac
 done
 }
 
-
+function tokens {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    submenu_tokens
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
 
 function bsk_seed_menu {
 while true
@@ -150,7 +161,7 @@ function bsk_seed_shutdown {
 function bsk_mining_getinfo {
   CHAIN=$CHAIN
   METHOD="getinfo"
-  if ps aux | grep -i $CHAIN | grep coinData ; then
+  if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
     curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
     MSGBOXINFO=`cat ~/.$METHOD`
@@ -164,7 +175,7 @@ function bsk_mining_getinfo {
 function bsk_mining_getmininginfo {
   CHAIN=$CHAIN
   METHOD="getmininginfo"
-  if ps aux | grep -i $CHAIN | grep coinData ; then
+  if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
     curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
     MSGBOXINFO=`cat ~/.$METHOD`
@@ -177,7 +188,7 @@ function bsk_mining_getmininginfo {
 
 
 function bsk_mining_spinup {
-  if ps aux | grep $CHAIN | grep coinData ; then
+  if ps aux | grep $CHAIN | grep -v grep; then
     echo "Already running a mining node"
     sleep 2
   else
@@ -185,7 +196,8 @@ function bsk_mining_spinup {
 	    echo "$CHAIN already been a mining node, no need to mkdir"
 	    sleep 1
     else
-      input_box "$CHAIN" "How many $CHAIN coins?\n\nNote: Must be same as seed node" "1000" SUPPLY
+      echo "This section may only be needed for BSK-1-node setups, and not BSK in general"
+      # input_box "$CHAIN" "How many $CHAIN coins?\n\nNote: Must be same as seed node" "1000" SUPPLY
       # NEWRPCPORT=$(shuf -i 25000-25500 -n 1)
       # TRYAGAIN=1
       # while [ $TRYAGAIN -eq 1 ]
@@ -213,17 +225,20 @@ function bsk_mining_spinup {
       # echo "Created datadir for single host BSK"
       # sleep 2
     fi
+    source ~/.devwallet
+    input_box "$CHAIN" "How many $CHAIN coins?\n\nNote: Must be same as seed node" "1000" SUPPLY
     input_box "$CHAIN" "Connect to the seed node at what (IP) address?\n\nNote: Must be same as seed node" "1.2.3.4" SEEDNODE
-    hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -addnode=$SEEDNODE -ac_cc=2 & #>/dev/null &
+    hide_output komodod -ac_name=$CHAIN -ac_supply=$SUPPLY -pubkey=$DEVPUBKEY -addnode=$SEEDNODE -ac_cc=2 & #>/dev/null &
     echo "Finished mining node setup"
     echo "Ready to enable mining..."
+    sleep 5
     cat ~/.komodo/$CHAIN/$CHAIN.conf
     sleep 3
   fi
 }
 
 function bsk_mining_importdevwallet {
-  if ps aux | grep -i $CHAIN | grep coinData ; then
+  if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
     source ~/.devwallet
     echo "Importing $DEVADDRESS"
@@ -237,7 +252,7 @@ function bsk_mining_importdevwallet {
 }
 
 function bsk_mining_start {
-  if ps aux | grep -i $CHAIN | grep coinData ; then
+  if ps aux | grep -i $CHAIN ; then
 	  echo "Staring mining on $CHAIN"
 	  sleep 3
     source ~/.komodo/$CHAIN/$CHAIN.conf
@@ -251,7 +266,7 @@ function bsk_mining_start {
 }
 
 function bsk_mining_stop {
-  if ps aux | grep -i $CHAIN | grep coinData ; then
+  if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
     RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"setgenerate\", \"params\": [false]}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
     #echo $RESULT
@@ -263,7 +278,7 @@ function bsk_mining_stop {
 }
 
 function bsk_mining_shutdown {
-  if ps aux | grep -i $CHAIN | grep coinData ; then
+  if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
     RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"stop\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
     echo $RESULT
