@@ -16,6 +16,7 @@ Choose the Seed or Mining Menu" 25 120 14 \
 SEED-MENU "BSK - $CHAIN seed control" \
 MINING-MENU "BSK - $CHAIN mining control" \
 TOKENS "Use the tokenization system on this blockchain" \
+WALLET "Use this node $CHAIN wallet" \
 Back "Back a menu" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -26,9 +27,21 @@ case $menuitem in
 	SEED-MENU) bsk_seed_menu;;
 	MINING-MENU) bsk_mining_menu;;
   TOKENS) tokens;;
+  WALLET) wallet;;
 	Back) echo "Bye"; break;;
 esac
 done
+}
+
+function wallet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    submenu_wallet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
 }
 
 function tokens {
@@ -41,6 +54,7 @@ function tokens {
     sleep 1
   fi
 }
+
 
 function bsk_seed_menu {
 while true
