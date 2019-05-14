@@ -13,8 +13,6 @@ dialog --clear  --help-button --backtitle "Cakeshop Console" \
 letter of the choice as a hot key, or the \n\
 number keys 1-9 to choose an option.\n\
 Choose the TASK" 25 120 14 \
-BSK_1_HOST "Blockchain Starer Kit - single node seed & mining" \
-BSK "Blockchain Starter Kit - (experimental) seed node or mining node" \
 NEW_DEV_WALLET "Create a new dev wallet to import on blockchains" \
 NEW_DEV2_WALLET "Create a second wallet for testing" \
 REGTEST "Regtest mode" \
@@ -25,8 +23,6 @@ menuitem=$(<"${INPUT}")
 
 # make decsion
 case $menuitem in
-	BSK_1_HOST) bsk1n;;
-	BSK) bsk;;
 	NEW_DEV_WALLET) setup_devwallet;;
 	NEW_DEV2_WALLET) setup_dev2wallet;;
 	REGTEST) submenu_regtest;;
