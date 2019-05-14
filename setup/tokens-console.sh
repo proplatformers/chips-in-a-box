@@ -62,7 +62,7 @@ function submenu_tokenfillask {
 
     echo "Got the list of tokens"
     cat $HOME/.kiabresponse > $HOME/.tmp2
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -75,8 +75,12 @@ function submenu_tokenfillask {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -136,15 +140,10 @@ function submenu_tokenfillask {
         for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("s")) | @base64'`
         # for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("b"))'`
         do
-        STRING=`echo $i | base64 --decode | jq -r '. | .price, .totalrequired'`
-        echo $STRING
-        STRING=`echo $STRING | sed 's/\ /-/'`
-        echo $STRING
-        sleep 5
-        # ORDERCHOICES2="$ORDERCHOICES2 $i "
-        # ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $i"
+        PRICE=`echo $i | base64 --decode | jq -r '. | .price'`
+        TOTALREQUIRED=`echo $i | base64 --decode | jq -r '. | .totalrequired'`
         ORDERCHOICES2="$ORDERCHOICES2 $i "
-        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $STRING"
+        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $TOTALREQUIRED@$PRICE"
         echo "$ORDERCOUNT $i \\">> $HOME/.kiabresponse
         let ORDERCOUNT=ORDERCOUNT+1
         done
@@ -212,7 +211,7 @@ function submenu_tokenfillbid {
 
     echo "Got the list of tokens"
     cat $HOME/.kiabresponse > $HOME/.tmp2
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -225,8 +224,12 @@ function submenu_tokenfillbid {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -286,15 +289,12 @@ function submenu_tokenfillbid {
         for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("b")) | @base64'`
         # for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("b"))'`
         do
-        STRING=`echo $i | base64 --decode | jq -r '. | .price, .totalrequired'`
-        echo $STRING
-        STRING=`echo $STRING | sed 's/\ /-/'`
-        echo $STRING
-        sleep 5
-        # ORDERCHOICES2="$ORDERCHOICES2 $i "
-        # ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $i"
+
+        PRICE=`echo $i | base64 --decode | jq -r '. | .price'`
+        TOTALREQUIRED=`echo $i | base64 --decode | jq -r '. | .totalrequired'`
         ORDERCHOICES2="$ORDERCHOICES2 $i "
-        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $STRING"
+        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $TOTALREQUIRED@$PRICE"
+
         echo "$ORDERCOUNT $i \\">> $HOME/.kiabresponse
         let ORDERCOUNT=ORDERCOUNT+1
         done
@@ -361,7 +361,7 @@ function submenu_tokencancelask {
 
     echo "Got the list of tokens"
     cat $HOME/.kiabresponse > $HOME/.tmp2
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -374,8 +374,12 @@ function submenu_tokencancelask {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -435,15 +439,10 @@ function submenu_tokencancelask {
         for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("s")) | @base64'`
         # for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("b"))'`
         do
-        STRING=`echo $i | base64 --decode | jq -r '. | .price, .totalrequired'`
-        echo $STRING
-        STRING=`echo $STRING | sed 's/\ /-/'`
-        echo $STRING
-        sleep 5
-        # ORDERCHOICES2="$ORDERCHOICES2 $i "
-        # ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $i"
+        PRICE=`echo $i | base64 --decode | jq -r '. | .price'`
+        TOTALREQUIRED=`echo $i | base64 --decode | jq -r '. | .totalrequired'`
         ORDERCHOICES2="$ORDERCHOICES2 $i "
-        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $STRING"
+        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $TOTALREQUIRED@$PRICE"
         echo "$ORDERCOUNT $i \\">> $HOME/.kiabresponse
         let ORDERCOUNT=ORDERCOUNT+1
         done
@@ -511,7 +510,7 @@ function submenu_tokencancelbid {
 
     echo "Got the list of tokens"
     cat $HOME/.kiabresponse > $HOME/.tmp2
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -524,8 +523,12 @@ function submenu_tokencancelbid {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -585,15 +588,10 @@ function submenu_tokencancelbid {
         for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("b")) | @base64'`
         # for i in `cat $HOME/.kiabresponse  | jq -r '.[] | select(.funcid | contains("b"))'`
         do
-        STRING=`echo $i | base64 --decode | jq -r '. | .price, .totalrequired'`
-        echo $STRING
-        STRING=`echo $STRING | sed 's/\ /-/'`
-        echo $STRING
-        sleep 5
-        # ORDERCHOICES2="$ORDERCHOICES2 $i "
-        # ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $i"
+        PRICE=`echo $i | base64 --decode | jq -r '. | .price'`
+        TOTALREQUIRED=`echo $i | base64 --decode | jq -r '. | .totalrequired'`
         ORDERCHOICES2="$ORDERCHOICES2 $i "
-        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $STRING"
+        ORDERCHOICES3="$ORDERCHOICES3 $ORDERCOUNT $TOTALREQUIRED@$PRICE"
         echo "$ORDERCOUNT $i \\">> $HOME/.kiabresponse
         let ORDERCOUNT=ORDERCOUNT+1
         done
@@ -661,7 +659,7 @@ function submenu_tokenorders {
 
     echo "Got the list of tokens"
 
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -674,8 +672,12 @@ function submenu_tokenorders {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -737,7 +739,7 @@ function submenu_tokentransfer {
 
     echo "Got the list of tokens"
 
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -750,8 +752,12 @@ function submenu_tokentransfer {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -814,7 +820,7 @@ function submenu_tokenbid {
 
     echo "Got the list of tokens"
 
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -827,8 +833,12 @@ function submenu_tokenbid {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -893,7 +903,7 @@ function submenu_tokenask {
 
     echo "Got the list of tokens"
 
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -906,8 +916,12 @@ function submenu_tokenask {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -971,7 +985,7 @@ function submenu_tokenbalance {
 
     echo "Got the list of tokens"
 
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
@@ -984,8 +998,12 @@ function submenu_tokenbalance {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
@@ -1050,11 +1068,10 @@ function submenu_tokeninfo {
     # if responds then message box saying no tokens to list
     # get info on or interact with, exit to last menu
 
-    cat $HOME/.kiabresponse | jq '.[]' > $HOME/.tmp
+    cat $HOME/.kiabresponse | jq -r '.[]' > $HOME/.tmp
     /bin/rm $HOME/.kiabresponse
 
     cat $HOME/.tmp
-    sleep 1
 
     COUNT=0
     #used later during selection
@@ -1063,8 +1080,12 @@ function submenu_tokeninfo {
     CHOICES3=""
     for i in `cat $HOME/.tmp`
     do
+      echo "Trying $i"
+      TOKENTXID=$i
+      helper_tokeninfo
+      TOKENNAME=`cat ~/.kiabresponse  | jq -r '. | .name'`
       CHOICES2="$CHOICES2 $i "
-      CHOICES3="$CHOICES3 $COUNT $i"
+      CHOICES3="$CHOICES3 $COUNT $TOKENNAME"
       echo "$COUNT $i \\">> $HOME/.kiabresponse
       let COUNT=COUNT+1
     done
