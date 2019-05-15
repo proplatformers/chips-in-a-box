@@ -8,6 +8,7 @@ fi
 source setup/wallet-console.sh
 source setup/kmdice.sh
 source setup/kmd.sh
+source setup/ksb.sh
 source setup/pirate.sh
 source setup/maint.sh
 source setup/beer.sh
@@ -32,7 +33,7 @@ KMDICE "KMDICE - the mineable provably fair chain" \
 MM2 "(q3 2019) - Marketmaker 2 integration" \
 PIRATE "(experimental) PIRATE - ARRR an enforced privary chain" \
 ZEX "(todo) ZEX - Zaddex Hybrid DEX Exchange" \
-KSB "(todo) KSB - Ecosystem stable coin from O-Crypto-Union" \
+KSB "(experimental) KSB - Ecosystem stable coin from O-Crypto-Union" \
 OUR "(todo) OUR - O-Crypto-Union" \
 PGT "(todo) PGT - Pungo Token - the services company paying back to the community" \
 OOT "(todo) OOT - Utrum Crypto Review Platform" \
@@ -51,6 +52,7 @@ case $menuitem in
 	BSK) bsk;;
 	KMD) submenu_kmd;;
 	KMDICE) submenu_kmdice;;
+	KSB) submenu_ksb;;
 	PIZZA) submenu_pizza;;
 	BEER) submenu_beer;;
 	PIRATE) submenu_pirate;;
