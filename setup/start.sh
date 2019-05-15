@@ -2,8 +2,8 @@
 # This is the entry point for configuring the system.
 #####################################################
 INSTALL_DIR=`pwd`
-#sudo apt-get update
-#sudo apt-get -y install libgomp1 jq dialog
+sudo apt-get update
+sudo apt-get -y install libgomp1 jq dialog
 source setup/functions.sh # load our functions
 mkdir -p ~/bin
 
