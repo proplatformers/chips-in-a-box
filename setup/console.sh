@@ -7,6 +7,7 @@ if [ ! -f ~/.dev2wallet ]; then
 fi
 source setup/wallet-console.sh
 source setup/kmdice.sh
+source setup/kmd.sh
 source setup/pirate.sh
 source setup/maint.sh
 source setup/beer.sh
@@ -25,7 +26,7 @@ number keys 1-9 to choose an option.\n\
 Choose the TASK" 25 120 14 \
 BSK "Blockchain Starter Kit - seed node or mining node" \
 BSK_1_HOST "Blockchain Starer Kit - single node seed & mining" \
-KMD "(todo) KMD - the Komodo ecosystem currency" \
+KMD "(experimental) KMD - the Komodo ecosystem currency" \
 BTC "(todo) - Bitcoin & other blockchains" \
 KMDICE "KMDICE - the mineable provably fair chain" \
 MM2 "(q3 2019) - Marketmaker 2 integration" \
@@ -48,6 +49,7 @@ menuitem=$(<"${INPUT}")
 case $menuitem in
 	BSK_1_HOST) bsk1n;;
 	BSK) bsk;;
+	KMD) submenu_kmd;;
 	KMDICE) submenu_kmdice;;
 	PIZZA) submenu_pizza;;
 	BEER) submenu_beer;;

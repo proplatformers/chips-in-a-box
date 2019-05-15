@@ -18,6 +18,7 @@ SENDALLADDRESS "sendtoaddress - send all native $CHAIN coins to an address" \
 TOKENADDRESS "tokenaddress - get address information for tokens on $CHAIN for this pubkey" \
 BALANCE "getbalance - get the balance for this node $CHAIN wallet" \
 VALIDATE "validateaddress - validate the address on this $CHAIN node wallet" \
+IMPORT-DEV-WALLET "importprivkey $CHAIN import the dev wallet of this node" \
 Back "Back" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -32,6 +33,7 @@ case $menuitem in
 	TOKENADDRESS) tokenaddress;;
     BALANCE) getbalance;;
 	VALIDATE) validateaddress;;
+	IMPORT-DEV-WALLET) importprivkey;;
 	Back) echo "Back"; break;;
 esac
 done
