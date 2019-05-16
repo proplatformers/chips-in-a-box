@@ -17,6 +17,7 @@ KMDICE_GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 KMDICE_DELETE "Experimental - Delete blockchain data" \
 KMDICE_START "Start $CHAIN" \
 WALLET "Wallet function for $CHAIN" \
+TOKENS "Use the tokenization system on this blockchain" \
 STOP "Stop $CHAIN" \
 Back "Back a menu" 2>"${INPUT}"
 
@@ -33,6 +34,7 @@ case $menuitem in
 	GETPEERINFO) getpeerinfo;;	
 	GETMININGINFO) getmininginfo;;
 	WALLET) kmdice_wallet;;
+	TOKENS) tokens;;
 	Back) echo "Bye"; break;;
 esac
 done
@@ -44,6 +46,18 @@ function kmdice_wallet {
     source ~/.komodo/$CHAIN/$CHAIN.conf
     source $HOME/.devwallet
     submenu_wallet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function tokens {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source ~/.devwallet
+    submenu_tokens
   else
     echo "Nothing to query - start $CHAIN..."
     sleep 1
