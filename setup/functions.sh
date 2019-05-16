@@ -325,6 +325,51 @@ function start_beer {
 	fi
 }
 
+function start_kmd {
+	CHAIN="Komodo"
+	source ~/.devwallet
+	echo "Starting $CHAIN..."
+	sleep 2
+	if ! ps aux | grep -i komodod | grep -v "name\|grep" ; then
+		echo "Starting $CHAIN... "
+		if [ "$DEVPUBKEY" == "" ]; then
+			echo "Starting $CHAIN with no pubkey set"
+			hide_output komodod -blank=KMD &
+			sleep 3
+		else
+			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
+			hide_output komodod -pubkey=$DEVPUBKEY -blank=KMD &
+			sleep 3
+		fi
+	else
+		echo "Not starting $CHAIN - already started"
+		sleep 4
+	fi
+}
+
+#y23y
+function start_ksb {
+	CHAIN="KSB"
+	source ~/.devwallet
+	echo "Starting $CHAIN..."
+	sleep 2
+	if ! ps aux | grep -i "[k]sb" ; then
+		echo "Starting $CHAIN... "
+		if [ "$DEVPUBKEY" == "" ]; then
+			echo "Starting $CHAIN with no pubkey set"
+			hide_output komodod -ac_name=KSB -ac_supply=1000000000 -ac_end=1 -ac_public=1 -addnode=37.187.225.231 &
+			sleep 3
+		else
+			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
+			hide_output komodod -pubkey=$DEVPUBKEY -ac_name=KSB -ac_supply=1000000000 -ac_end=1 -ac_public=1 -addnode=37.187.225.231 &
+			sleep 3
+		fi
+	else
+		echo "Not starting $CHAIN - already started"
+		sleep 4
+	fi
+}
+
 #y23y
 function start_pizza {
 	CHAIN="PIZZA"
