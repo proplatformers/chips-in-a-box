@@ -1133,7 +1133,7 @@ function submenu_tokencreate {
     input_box "Name Question" "Token name?" "TOKENA" TOKENNAME
     input_box "Supply Question" "How many tokens? 0.01 is 100k" "0.01" TOKENSUPPLY
     input_box "Description of token" "Short description of token?" "short description" TOKENDESCRIPTION
-    source ~/.devwallet
+    #source ~/.devwallet
     tokencreate 
 }
 

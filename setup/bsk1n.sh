@@ -29,7 +29,6 @@ esac
 done
 }
 
-
 function bsk1n_control {
 while true
 do
@@ -58,11 +57,12 @@ done
 }
 
 function bsk1n_seed_menu {
+  source $HOME/.devwallet
 while true
 do
 
 ### display main menu ###
-dialog --clear  --help-button --backtitle "Cakeshop Console" \
+dialog --clear  --help-button --backtitle "Cakeshop Console using pubkey $DEVPUBKEY" \
 --title "[ Blockchain Starter Kit - $CHAIN Seed Menu ]" \
 --menu "You can use the UP/DOWN arrow keys, the first \n\
 letter of the choice as a hot key, or the \n\
@@ -73,6 +73,7 @@ NEW-NODE-SEED "Create a BSK-1node $CHAIN seed node" \
 SHUTDOWN-NODE-SEED "Shutdown $CHAIN seed node" \
 COINGW "Experimental: Coin Gateway" \
 TOKENS "Use the tokenization system on this blockchain" \
+ORACLES "Use the oracles on this blockchain" \
 WALLET "Use this node $CHAIN wallet" \
 Back "Back a menu" 2>"${INPUT}"
 
@@ -81,11 +82,12 @@ menuitem=$(<"${INPUT}")
 
 # make decsion
 case $menuitem in
-	NEW-NODE-SEED) bsk1n_seed_spinup;;
-	SEED-GETINFO) bsk1n_seed_getinfo;;
+  SPINUP-SEED) bsk1n_seed_spinup;;
+  SEED-GETINFO) bsk1n_seed_getinfo;;
   COINGW) coingw;;
-	SHUTDOWN-NODE-SEED) bsk1n_seed_shutdown;;
+  SHUTDOWN-NODE-SEED) bsk1n_seed_shutdown;;
   TOKENS) bsk1n_seed_tokens;;
+  ORACLES) bsk1n_seed_oracles;;
   WALLET) bsk1n_seed_wallet;;
 	Back) echo "Bye"; break;;
 esac
@@ -93,11 +95,12 @@ done
 }
 
 function bsk1n_mining_menu {
+  source $HOME/.dev2wallet
 while true
 do
 
 ### display main menu ###
-dialog --clear  --help-button --backtitle "Cakeshop Console" \
+dialog --clear  --help-button --backtitle "Cakeshop Console using pubkey $DEVPUBKEY" \
 --title "[ Blockchain Starter Kit - $CHAIN Mining Menu ]" \
 --menu "You can use the UP/DOWN arrow keys, the first \n\
 letter of the choice as a hot key, or the \n\
@@ -110,6 +113,7 @@ MINING-STOP "BSK-1node $CHAIN mining stop" \
 IMPORT-DEV-WALLET "BSK-1node $CHAIN import the dev wallet of this node" \
 NEW-NODE-MINER "Create a BSK-1node $CHAIN mining node" \
 TOKENS "Use the tokenization system on this blockchain" \
+ORACLES "Use the oracles on this blockchain" \
 WALLET "Use this node $CHAIN wallet" \
 COINGW "Experimental: Coin Gateway" \
 SHUTDOWN-NODE-MINER "Shutdown $CHAIN mining node" \
@@ -120,15 +124,16 @@ menuitem=$(<"${INPUT}")
 
 # make decsion
 case $menuitem in
-	NEW-NODE-MINER) bsk1n_mining_spinup;;
-	MINER-GETINFO) bsk1n_mining_getinfo;;
-	MINER-GETMININGINFO) bsk1n_mining_getmininginfo;;
-	MINING-START) bsk1n_mining_start;;
-	MINING-STOP) bsk1n_mining_stop;;
+  NEW-NODE-MINER) bsk1n_mining_spinup;;
+  MINER-GETINFO) bsk1n_mining_getinfo;;
+  MINER-GETMININGINFO) bsk1n_mining_getmininginfo;;
+  MINING-START) bsk1n_mining_start;;
+  MINING-STOP) bsk1n_mining_stop;;
   COINGW) coingw;;
-	IMPORT-DEV-WALLET) bsk1n_mining_importdevwallet;;
-	SHUTDOWN-NODE-MINER) bsk1n_mining_shutdown;;
+  IMPORT-DEV-WALLET) bsk1n_mining_importdevwallet;;
+  SHUTDOWN-NODE-MINER) bsk1n_mining_shutdown;;
   TOKENS) bsk1n_mining_tokens;;
+  ORACLES) bsk1n_mining_oracles;;
   WALLET) bsk1n_mining_wallet;;
 	Back) echo "Bye"; break;;
 esac
@@ -331,9 +336,22 @@ function bsk1n_seed_tokens {
   fi
 }
 
-function bsk1n_mining_wallet {
+function bsk1n_seed_oracles {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
+    submenu_oracles
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+
+function bsk1n_mining_wallet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN | grep coinData ; then
     source ~/coinData/$CHAIN/$CHAIN.conf
     source $HOME/.dev2wallet
     submenu_wallet
@@ -345,10 +363,23 @@ function bsk1n_mining_wallet {
 
 function bsk1n_mining_tokens {
   KIABMETHOD="listunspent"
-  if ps aux | grep -i $CHAIN ; then
+  if ps aux | grep -i $CHAIN | grep coinData ; then
     source ~/coinData/$CHAIN/$CHAIN.conf
     source $HOME/.dev2wallet
     submenu_tokens
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function bsk1n_mining_oracles {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN | grep coinData ; then
+    source ~/coinData/$CHAIN/$CHAIN.conf
+    source $HOME/.dev2wallet
+    echo "Using mining node's oracles data"
+    submenu_oracles
   else
     echo "Nothing to query - start $CHAIN..."
     sleep 1
