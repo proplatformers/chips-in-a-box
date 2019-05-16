@@ -2,10 +2,8 @@
 function submenu_tokens {
 while true
 do
-echo "Token system for blockchain:"
-echo $CHAIN
 ### display main menu ###
-dialog --clear  --help-button --backtitle "Cakeshop Console" \
+dialog --clear  --help-button --backtitle "Cakeshop Console using pubkey $DEVPUBKEY" \
 --title "[ C A K E S H O P - T O K E N - C O N S O L E ]" \
 --menu "You can use the UP/DOWN arrow keys, the first \n\
 letter of the choice as a hot key, or the \n\

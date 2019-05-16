@@ -2,12 +2,8 @@
 function submenu_oracles {
 while true
 do
-echo "Oracles for blockchain:"
-echo $CHAIN
-echo $DEVPUBKEY
-sleep 2
 ### display main menu ###
-dialog --clear  --help-button --backtitle "Cakeshop Console" \
+dialog --clear  --help-button --backtitle "Cakeshop Console using pubkey $DEVPUBKEY" \
 --title "[ C A K E S H O P - O R A C L E S - C O N S O L E ]" \
 --menu "You can use the UP/DOWN arrow keys, the first \n\
 letter of the choice as a hot key, or the \n\

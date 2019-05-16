@@ -74,6 +74,7 @@ SHUTDOWN-NODE-SEED "Shutdown $CHAIN seed node" \
 COINGW "Experimental: Coin Gateway" \
 TOKENS "Use the tokenization system on this blockchain" \
 ORACLES "Use the oracles on this blockchain" \
+FAUCET "Use the on-chain faucet" \
 WALLET "Use this node $CHAIN wallet" \
 Back "Back a menu" 2>"${INPUT}"
 
@@ -88,6 +89,7 @@ case $menuitem in
   SHUTDOWN-NODE-SEED) bsk1n_seed_shutdown;;
   TOKENS) bsk1n_seed_tokens;;
   ORACLES) bsk1n_seed_oracles;;
+  FAUCET) bsk1n_seed_faucet;;
   WALLET) bsk1n_seed_wallet;;
 	Back) echo "Bye"; break;;
 esac
@@ -114,6 +116,7 @@ IMPORT-DEV-WALLET "BSK-1node $CHAIN import the dev wallet of this node" \
 NEW-NODE-MINER "Create a BSK-1node $CHAIN mining node" \
 TOKENS "Use the tokenization system on this blockchain" \
 ORACLES "Use the oracles on this blockchain" \
+FAUCET "Use the on-chain faucet" \
 WALLET "Use this node $CHAIN wallet" \
 COINGW "Experimental: Coin Gateway" \
 SHUTDOWN-NODE-MINER "Shutdown $CHAIN mining node" \
@@ -134,6 +137,7 @@ case $menuitem in
   SHUTDOWN-NODE-MINER) bsk1n_mining_shutdown;;
   TOKENS) bsk1n_mining_tokens;;
   ORACLES) bsk1n_mining_oracles;;
+  FAUCET) bsk1n_mining_faucet;;
   WALLET) bsk1n_mining_wallet;;
 	Back) echo "Bye"; break;;
 esac
@@ -348,6 +352,17 @@ function bsk1n_seed_oracles {
   fi
 }
 
+function bsk1n_seed_faucet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
+    submenu_faucet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
 
 function bsk1n_mining_wallet {
   KIABMETHOD="listunspent"
@@ -386,3 +401,15 @@ function bsk1n_mining_oracles {
   fi
 }
 
+function bsk1n_mining_faucet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN | grep coinData ; then
+    source ~/coinData/$CHAIN/$CHAIN.conf
+    source $HOME/.dev2wallet
+    echo "Using mining node's faucet"
+    submenu_faucet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
