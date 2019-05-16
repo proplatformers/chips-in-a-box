@@ -16,6 +16,7 @@ GETPEERINFO "Get Network Info - $CHAIN getpeerinfo" \
 KMDICE_GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 KMDICE_DELETE "Experimental - Delete blockchain data" \
 KMDICE_START "Start $CHAIN" \
+WALLET "Wallet function for $CHAIN" \
 STOP "Stop $CHAIN" \
 Back "Back a menu" 2>"${INPUT}"
 
@@ -31,7 +32,20 @@ case $menuitem in
 	LISTUNSPENT) listunspent;;
 	GETPEERINFO) getpeerinfo;;	
 	GETMININGINFO) getmininginfo;;
+	WALLET) kmdice_wallet;;
 	Back) echo "Bye"; break;;
 esac
 done
+}
+
+function kmdice_wallet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i komodod | grep -v "naame\|grep" ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
+    submenu_wallet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
 }

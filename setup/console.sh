@@ -16,6 +16,7 @@ source setup/pizza.sh
 source setup/tokens-console.sh
 source setup/oracles-console.sh
 source setup/faucet-console.sh
+source setup/rewards-console.sh
 
 while true
 do

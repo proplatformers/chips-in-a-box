@@ -75,6 +75,7 @@ COINGW "Experimental: Coin Gateway" \
 TOKENS "Use the tokenization system on this blockchain" \
 ORACLES "Use the oracles on this blockchain" \
 FAUCET "Use the on-chain faucet" \
+REWARDS "Use the on-chain rewards system" \
 WALLET "Use this node $CHAIN wallet" \
 Back "Back a menu" 2>"${INPUT}"
 
@@ -90,6 +91,7 @@ case $menuitem in
   TOKENS) bsk1n_seed_tokens;;
   ORACLES) bsk1n_seed_oracles;;
   FAUCET) bsk1n_seed_faucet;;
+  REWARDS) bsk1n_seed_rewards;;
   WALLET) bsk1n_seed_wallet;;
 	Back) echo "Bye"; break;;
 esac
@@ -117,6 +119,7 @@ NEW-NODE-MINER "Create a BSK-1node $CHAIN mining node" \
 TOKENS "Use the tokenization system on this blockchain" \
 ORACLES "Use the oracles on this blockchain" \
 FAUCET "Use the on-chain faucet" \
+REWARDS "Use the on-chain rewards system" \
 WALLET "Use this node $CHAIN wallet" \
 COINGW "Experimental: Coin Gateway" \
 SHUTDOWN-NODE-MINER "Shutdown $CHAIN mining node" \
@@ -138,6 +141,7 @@ case $menuitem in
   TOKENS) bsk1n_mining_tokens;;
   ORACLES) bsk1n_mining_oracles;;
   FAUCET) bsk1n_mining_faucet;;
+  REWARDS) bsk1n_mining_rewards;;
   WALLET) bsk1n_mining_wallet;;
 	Back) echo "Bye"; break;;
 esac
@@ -364,6 +368,18 @@ function bsk1n_seed_faucet {
   fi
 }
 
+function bsk1n_seed_rewards {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source $HOME/.devwallet
+    submenu_rewards
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
 function bsk1n_mining_wallet {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN | grep coinData ; then
@@ -408,6 +424,19 @@ function bsk1n_mining_faucet {
     source $HOME/.dev2wallet
     echo "Using mining node's faucet"
     submenu_faucet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function bsk1n_mining_rewards {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN | grep coinData ; then
+    source ~/coinData/$CHAIN/$CHAIN.conf
+    source $HOME/.dev2wallet
+    echo "Using mining node's rewards"
+    submenu_rewards
   else
     echo "Nothing to query - start $CHAIN..."
     sleep 1

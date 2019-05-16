@@ -12,6 +12,7 @@ source setup/komodo-api/rawtransactions.sh
 source setup/cc/tokens.sh
 source setup/cc/oracles.sh
 source setup/cc/faucet.sh
+source setup/cc/rewards.sh
 
 function hide_output {
 	# This function hides the output of a command unless the command fails

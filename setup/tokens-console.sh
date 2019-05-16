@@ -9,7 +9,8 @@ dialog --clear  --help-button --backtitle "Cakeshop Console using pubkey $DEVPUB
 letter of the choice as a hot key, or the \n\
 number keys 1-9 to choose an option.\n\
 Choose the TASK" 25 120 14 \
-LIST "tokenlist - list tokens created on $CHAIN" \INFO "tokeninfo - get info about a token on $CHAIN" \
+LIST "tokenlist - list tokens created on $CHAIN" \
+INFO "tokeninfo - get info about a token on $CHAIN" \
 CREATE "tokencreate - create a token on $CHAIN" \
 ADDRESS "tokenaddress - get address information on $CHAIN" \
 BALANCE "tokenbalance - get the balance for this dev pubkey for a token on $CHAIN" \
