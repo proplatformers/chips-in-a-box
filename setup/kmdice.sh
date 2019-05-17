@@ -36,8 +36,9 @@ case $menuitem in
 	GETPEERINFO) getpeerinfo;;	
 	GETMININGINFO) getmininginfo;;
 	WALLET) kmdice_wallet;;
-	TOKENS) tokens;;
-  FAUCET) 
+	TOKENS) kmdice_tokens;;
+  FAUCET) kmdice_faucet;;
+  REWARDS) kmdice_rewards;;
 	Back) echo "Bye"; break;;
 esac
 done
@@ -55,7 +56,7 @@ function kmdice_wallet {
   fi
 }
 
-function tokens {
+function kmdice_tokens {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
@@ -68,7 +69,7 @@ function tokens {
 }
 
 
-function faucet {
+function kmdice_faucet {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
@@ -80,7 +81,7 @@ function faucet {
   fi
 }
 
-function rewards {
+function kmdice_rewards {
   KIABMETHOD="listunspent"
   if ps aux | grep -i $CHAIN ; then
     source ~/.komodo/$CHAIN/$CHAIN.conf
