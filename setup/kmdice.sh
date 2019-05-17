@@ -37,6 +37,7 @@ case $menuitem in
 	GETMININGINFO) getmininginfo;;
 	WALLET) kmdice_wallet;;
 	TOKENS) tokens;;
+  FAUCET) 
 	Back) echo "Bye"; break;;
 esac
 done
@@ -60,6 +61,31 @@ function tokens {
     source ~/.komodo/$CHAIN/$CHAIN.conf
     source ~/.devwallet
     submenu_tokens
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+
+function faucet {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source ~/.devwallet
+    submenu_faucet
+  else
+    echo "Nothing to query - start $CHAIN..."
+    sleep 1
+  fi
+}
+
+function rewards {
+  KIABMETHOD="listunspent"
+  if ps aux | grep -i $CHAIN ; then
+    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source ~/.devwallet
+    submenu_rewards
   else
     echo "Nothing to query - start $CHAIN..."
     sleep 1
