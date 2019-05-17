@@ -13,6 +13,7 @@ LIST "rewardslist - list rewards created on $CHAIN" \
 INFO "rewardsinfo - get info about a rewards on $CHAIN" \
 CREATE "rewardscreatefunding - create a rewards plan on $CHAIN" \
 ADDRESS "rewardsaddress - get address information on $CHAIN" \
+LOCK "rewardslock - lock some funds in for reward on $CHAIN" \
 Back "Back" 2>"${INPUT}"
 
 menuitem=$(<"${INPUT}")
@@ -24,8 +25,7 @@ case $menuitem in
   CREATE) submenu_rewardscreatefunding;;
   ADDRESS) rewardsaddress;;
   BALANCE) submenu_rewardsbalance;;
-  ASK) submenu_rewardsask;;
-  BID) submenu_rewardsbid;;
+  LOCK) submenu_rewardslock;;
 	Back) echo "Back"; break;;
 esac
 done

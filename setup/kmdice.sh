@@ -17,6 +17,8 @@ KMDICE_GETMININGINFO "Get Mining Info - $CHAIN getmininginfo" \
 KMDICE_DELETE "Experimental - Delete blockchain data" \
 KMDICE_START "Start $CHAIN" \
 WALLET "Wallet function for $CHAIN" \
+FAUCET "Faucet functions for $CHAIN" \
+REWARDS "Rewards functions for $CHAIN" \
 TOKENS "Use the tokenization system on this blockchain" \
 STOP "Stop $CHAIN" \
 Back "Back a menu" 2>"${INPUT}"
