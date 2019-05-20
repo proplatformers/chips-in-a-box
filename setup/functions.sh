@@ -3,16 +3,12 @@
 # -u: exit if we have a variable typo.
 # -o pipefail: don't ignore errors in the non-last command in a pipeline 
 set -euo pipefail
-source setup/komodo-api/control.sh
-source setup/komodo-api/wallet.sh
-source setup/komodo-api/network.sh
-source setup/komodo-api/mining.sh
-source setup/komodo-api/util.sh
-source setup/komodo-api/rawtransactions.sh
-source setup/cc/tokens.sh
-source setup/cc/oracles.sh
-source setup/cc/faucet.sh
-source setup/cc/rewards.sh
+source setup/chips-api/control.sh
+source setup/chips-api/wallet.sh
+source setup/chips-api/network.sh
+source setup/chips-api/mining.sh
+source setup/chips-api/util.sh
+source setup/chips-api/rawtransactions.sh
 
 function hide_output {
 	# This function hides the output of a command unless the command fails
@@ -248,152 +244,6 @@ INPUT=/tmp/menu.sh.$$
 
 # Storage file for displaying cal and date command output
 OUTPUT=/tmp/output.sh.$$
-
-function init_pubkey {
-	cp setup/pubkey_example.sh setup/pubkey.sh
-	echo "Copied sample pubkey"
-	sleep 3
-	echo "Install dir is $INSTALL_DIR"
-	sleep 3
-	sed -i 's/XX_REPLACE_XX//g' setup/pubkey.sh
-}
-
-#y23y
-function start_hush3 {
-	source ~/.devwallet
-	echo "Starting HUSH3..."
-	sleep 2
-	if ! ps aux | grep -i "[h]ush" ; then
-		echo "Starting hush3... "
-		if [ "$DEVPUBKEY" == "" ]; then
-			echo "Starting HUSH3 with no pubkey set"
-			hide_output hushd & 
-			sleep 3
-		else
-			echo "Starting HUSH3 with pubkey $DEVPUBKEY"
-			hide_output hushd -pubkey=$DEVPUBKEY &
-			sleep 3
-		fi
-	else
-		echo "Not starting HUSH3 - already started"
-		sleep 4
-	fi
-}
-
-#y23y
-function start_pirate {
-	CHAIN="PIRATE"
-	source ~/.devwallet
-	echo "Starting $CHAIN..."
-	sleep 2
-	if ! ps aux | grep -i "[p]irate" ; then
-		echo "Starting pirate... "
-		if [ "$DEVPUBKEY" == "" ]; then
-			echo "Starting $CHAIN with no pubkey set"
-			hide_output komodod -ac_name=PIRATE -ac_supply=0 -ac_reward=25600000000 -ac_halving=77777 -ac_private=1 -addnode=178.63.77.56 &
-
-			sleep 3
-		else
-			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
-			hide_output komodod -pubkey=$DEVPUBKEY -ac_name=PIRATE -ac_supply=10500000 -ac_reward=2500000000 -ac_halving=210000 -ac_cc=2 -addressindex=1 -spentindex=1 -addnode=144.76.217.232 &
-			sleep 3
-		fi
-	else
-		echo "Not starting $CHAIN - already started"
-		sleep 4
-	fi
-}
-
-#y23y
-function start_beer {
-	CHAIN="BEER"
-	source ~/.devwallet
-	echo "Starting $CHAIN..."
-	sleep 2
-	if ! ps aux | grep -i "[b]eer" ; then
-		echo "Starting $CHAIN... "
-		if [ "$DEVPUBKEY" == "" ]; then
-			echo "Starting $CHAIN with no pubkey set"
-			hide_output komodod -ac_name=BEER -ac_supply=100000000 -addnode=78.47.196.146 &
-			sleep 3
-		else
-			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
-			hide_output komodod -pubkey=$DEVPUBKEY -ac_name=BEER -ac_supply=100000000 -addnode=78.47.196.146 &
-			sleep 3
-		fi
-	else
-		echo "Not starting $CHAIN - already started"
-		sleep 4
-	fi
-}
-
-function start_kmd {
-	CHAIN="Komodo"
-	source ~/.devwallet
-	echo "Starting $CHAIN..."
-	sleep 2
-	if ! ps aux | grep -i komodod | grep -v "name\|grep" ; then
-		echo "Starting $CHAIN... "
-		if [ "$DEVPUBKEY" == "" ]; then
-			echo "Starting $CHAIN with no pubkey set"
-			hide_output komodod -blank=KMD &
-			sleep 3
-		else
-			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
-			hide_output komodod -pubkey=$DEVPUBKEY -blank=KMD &
-			sleep 3
-		fi
-	else
-		echo "Not starting $CHAIN - already started"
-		sleep 4
-	fi
-}
-
-#y23y
-function start_ksb {
-	CHAIN="KSB"
-	source ~/.devwallet
-	echo "Starting $CHAIN..."
-	sleep 2
-	if ! ps aux | grep -i "[k]sb" ; then
-		echo "Starting $CHAIN... "
-		if [ "$DEVPUBKEY" == "" ]; then
-			echo "Starting $CHAIN with no pubkey set"
-			hide_output komodod -ac_name=KSB -ac_supply=1000000000 -ac_end=1 -ac_public=1 -addnode=37.187.225.231 &
-			sleep 3
-		else
-			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
-			hide_output komodod -pubkey=$DEVPUBKEY -ac_name=KSB -ac_supply=1000000000 -ac_end=1 -ac_public=1 -addnode=37.187.225.231 &
-			sleep 3
-		fi
-	else
-		echo "Not starting $CHAIN - already started"
-		sleep 4
-	fi
-}
-
-#y23y
-function start_pizza {
-	CHAIN="PIZZA"
-	source ~/.devwallet
-	echo "Starting $CHAIN..."
-	sleep 2
-	if ! ps aux | grep -i "[p]izza" ; then
-		echo "Starting $CHAIN... "
-		if [ "$DEVPUBKEY" == "" ]; then
-			echo "Starting $CHAIN with no pubkey set"
-			hide_output komodod -ac_name=PIZZA -ac_supply=100000000 -addnode=78.47.196.146 &
-			sleep 3
-		else
-			echo "Starting $CHAIN with pubkey $DEVPUBKEY"
-			hide_output komodod -pubkey=$DEVPUBKEY -ac_name=PIZZA -ac_supply=100000000 -addnode=78.47.196.146 &
-			sleep 3
-		fi
-	else
-		echo "Not starting $CHAIN - already started"
-		sleep 4
-	fi
-}
 
 #y23y
 function start_kmdice {

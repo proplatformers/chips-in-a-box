@@ -7,20 +7,19 @@ INSTALL_DIR=`pwd`
 source setup/functions.sh # load our functions
 mkdir -p ~/bin
 
-# Put a start script in a global location. We tell the user to run 'komodoinabox'
+# Put a start script in a global location. We tell the user to run 'chipsinabox'
 # in the first dialog prompt, so we should do this before that starts.
-cat > ~/bin/komodoinabox << EOF;
+cat > ~/bin/chipsinabox << EOF;
 #!/bin/bash
 cd `pwd`
 source setup/start.sh
 EOF
-chmod +x ~/bin/komodoinabox
+chmod +x ~/bin/chipsinabox
 
 source setup/console.sh 
 echo
 echo "-----------------------------------------------"
 echo
-echo Your komodo-in-a-box is running with these blockchains 1 per line
+echo Your chips-in-a-box is running below
 echo
-ps aux | grep komodod | grep -v grep | awk -F " " '{$1=$2=$3=$4=$5=$6=$7=$8=$9=$10=""; print $0 }'
-ps aux | grep hushd | grep -v grep | awk -F " " '{$1=$2=$3=$4=$5=$6=$7=$8=$9=$10=""; print $0 }'
+ps aux | grep chipsd | grep -v grep 
