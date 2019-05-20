@@ -14,7 +14,8 @@ Choose the TASK" 25 120 14 \
 CHIPS "CHIPS - install the decentralized peer-to-peer blockchain backend" \
 LIGHTNING "LIGHTNING - install lightning for cheap microtransactions" \
 PANGEA "PANGEA - install the front end GUI web application" \
-BET "BET - install the pangea backend" \
+BETREST "BET - install the pangea backend rest_dev branch" \
+BETPOKER "BET - install the pangea backend poker branch" \
 STARTSERVING "Start serving the front end" \
 Back "Go back in the menu" 2>"${INPUT}"
 
@@ -26,7 +27,8 @@ case $menuitem in
         LIGHTNING) install_lightning;;
         CHIPS) install_chips;;
         PANGEA) install_pangea;;
-	BET) install_bet;;
+	BETREST) install_bet_rest;;
+	BETPOKER) install_bet_poker;;
 	STARTSERVING) start_frontend;;
         Back) echo "Bye"; break;;
 esac
@@ -95,6 +97,14 @@ if [ ! -d $HOME/chips3 ] ; then
 	sleep 2
 	sudo ln -sf ${PWD}/src/chipsd /usr/local/bin/chipsd
 	sudo ln -sf ${PWD}/src/chips-cli /usr/local/bin/chips-cli
+	echo "Making a default config files at $HOME/.chips/chips.conf"
+	mkdir -p $HOME/.chips
+	echo "rpcuser=userighkjasdf98h" > $HOME/.chips/chips.conf
+	echo "rpcpassword=pass87uy2n0" >> $HOME/.chips/chips.conf
+	echo "txindex=1" >> $HOME/.chips/chips.conf
+	echo "daemon=1" >> $HOME/.chips/chips.conf
+	echo "addnode=5.9.253.195" >> $HOME/.chips/chips.conf
+	echo "addnode=74.208.210.191" >>$HOME/.chips/chips.conf
 else
 	echo "chips3 already tried installing before?"
 	sleep 1
@@ -111,7 +121,7 @@ else
 fi
 }
 
-function install_bet {
+function install_bet_rest {
 if [ ! -d $HOME/bet ] ; then
 	cd $HOME
 	echo "Installing some dependencies - might ask for sudo password"
@@ -134,6 +144,39 @@ if [ ! -d $HOME/bet ] ; then
 	cd $HOME
 	git clone https://github.com/sg777/bet.git
 	cd bet
+	git checkout rest_dev
+	echo "Building bet - will take 1 minute"
+	make
+else
+	echo "Already tried installing"
+	sleep 2
+fi
+}
+
+function install_bet_poker {
+if [ ! -d $HOME/bet ] ; then
+	cd $HOME
+	echo "Installing some dependencies - might ask for sudo password"
+	sleep 3
+	sudo apt-get install software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake ninja-build libsqlite3-dev libgmp3-dev
+	echo "Cloning nng"
+	sleep 2
+	cd $HOME
+	git clone https://github.com/nanomsg/nng.git
+	cd nng
+	mkdir build
+	cd build
+	echo "Building nng"
+	cmake -G Ninja ..
+	ninja
+	ninja test
+	sudo ninja install
+	echo "Cloning sg777's bet repo from https://github.com/sg777/bet"
+	sleep 2
+	cd $HOME
+	git clone https://github.com/sg777/bet.git
+	cd bet
+	git checkout poker
 	echo "Building bet - will take 1 minute"
 	make
 else
