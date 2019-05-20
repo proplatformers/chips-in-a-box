@@ -17,11 +17,11 @@ cd chips-in-a-box
 setup/start.sh
 ```
 
-Follow the INSTALL menu.
-* CHIPS
-* LIGHTNING
-* PANGEA
-* BET
+Follow the INSTALL menu.  If any stage breaks during `git clone` then rm the directory to start that part again.  This will be handled better in the future.
+* CHIPS  (if problem, rm -Rf $HOME/chips3)
+* LIGHTNING  (if problem, rm -Rf $HOME/lightning)
+* PANGEA 
+* BET  (if problem, rm -Rf $HOME/nng & rm -Rf $HOME/bet)
 * STARTSERVING
 Browse to the box on port 7777 e.g. http://xxx.xxx.xxx.xxx:7777
 
