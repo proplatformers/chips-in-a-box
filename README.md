@@ -16,10 +16,20 @@ git clone https://github.com/proplatformers/chips-in-a-box
 cd chips-in-a-box
 setup/start.sh
 ```
+
 Follow the INSTALL menu.
+* CHIPS
+* LIGHTNING
+* PANGEA
+* BET
+* STARTSERVING
+Browse to the box on port 7777 e.g. http://xxx.xxx.xxx.xxx:7777
+
+No TLS or proxying for security yet.
+
 
 Work in progress.
-# Helpful command line bits and pieces
+# Helpful command line bits and pieces (no menu driven setup yet)
 ```
 lightningd --alias=friendlyalias --ipaddr=62.210.81.14  --rgb=555555 --log-level=debug
 ifconifg
