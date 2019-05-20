@@ -1,24 +1,55 @@
 # Requirements
 * Ubuntu 64 bit 18.04 AMD/Intel
 * 4GB RAM
-* 20+GB HDD (depending on number of blockchain projects)
+* 20GB HDD
+
+# Software
+* (?)Fail2ban
+* CHIPS
+* Lightning
+* Pangea Poker Frontend
+* More to come including marketmaker-in-a-box
 
 # Install
-Run as root
 ```
-ssh root@host
-curl https://cakeshop.dev/setup.sh | sudo bash
+git clone https://github.com/proplatformers/chips-in-a-box
+cd chips-in-a-box
+setup/start.sh
 ```
-# Software
-* Fail2ban
-* Komodo
-* Hush
-* Verus (in dev)
-* CHIPS (in dev)
-* More to come including marketmaker-in-a-box, iguana-in-a-box and other blockchains (BTC/LTC/ZEC/DGB/etc.)
+
+Follow the INSTALL menu.  If any stage breaks during `git clone` then rm the directory to start that part again.  This will be handled better in the future.
+* CHIPS  (if clone problem, `rm -Rf $HOME/chips3`)
+* LIGHTNING  (if git clone problem, `rm -Rf $HOME/lightning`)
+* PANGEA 
+* BET  (if git clone problem, `rm -Rf $HOME/nng` & `rm -Rf $HOME/bet`)
+* STARTSERVING
+Browse to the box on port 7777 e.g. http://xxx.xxx.xxx.xxx:7777
+
+No TLS or proxying for security yet.
 
 
-Komodo-in-a-Box
+Work in progress.
+# Helpful command line bits and pieces (no menu driven setup yet)
+```
+lightningd --alias=friendlyalias --ipaddr=62.210.81.14  --rgb=555555 --log-level=debug
+ifconifg
+lightningd --alias=friendlyalias --ipaddr=62.210.81.14  --rgb=555555 --log-level=debug &
+lightning-cli getinfo | jq
+lightning-cli getnewaddress
+lightning-cli newaddr | jq
+lightning-cli listfunds
+lightning-cli connect 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  185.62.57.207
+lightning-cli connect 025612
+lightning-cli connect 02851a6b619adb7f9c4876a3d90b68b0dc0caf7140b9fd3cf9bb8eb7060e03958f 185.62.57.25
+lightning-cli fundchannel  02851a6b619adb7f9c4876a3d90b68b0dc0caf7140b9fd3cf9bb8eb7060e03958f 200000
+lightning-cli connect 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  185.62.57.207
+lightning-cli fundchannel 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  50000
+lightning-cli connect 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  185.62.57.207
+```
+
+
+
+Forked from Komodo-in-a-Box
 =============
 
 By [@imylomylo](https://github.com/imylomylo) and [contributors](https://github.com/cakeshopclouddev/komodo-in-a-box/graphs/contributors).
