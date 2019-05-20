@@ -10,6 +10,16 @@
 * Pangea Poker Frontend
 * More to come including marketmaker-in-a-box
 
+# Install
+```
+git clone https://github.com/proplatformers/chips-in-a-box
+cd chips-in-a-box
+setup/start.sh
+```
+Follow the INSTALL menu.
+
+Work in progress.
+
 
 Forked from Komodo-in-a-Box
 =============
