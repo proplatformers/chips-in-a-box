@@ -19,6 +19,24 @@ setup/start.sh
 Follow the INSTALL menu.
 
 Work in progress.
+# Helpful command line bits and pieces
+```
+lightningd --alias=friendlyalias --ipaddr=62.210.81.14  --rgb=555555 --log-level=debug
+ifconifg
+lightningd --alias=friendlyalias --ipaddr=62.210.81.14  --rgb=555555 --log-level=debug &
+lightning-cli getinfo | jq
+lightning-cli getnewaddress
+lightning-cli newaddr | jq
+lightning-cli listfunds
+lightning-cli connect 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  185.62.57.207
+lightning-cli connect 025612
+lightning-cli connect 02851a6b619adb7f9c4876a3d90b68b0dc0caf7140b9fd3cf9bb8eb7060e03958f 185.62.57.25
+lightning-cli fundchannel  02851a6b619adb7f9c4876a3d90b68b0dc0caf7140b9fd3cf9bb8eb7060e03958f 200000
+lightning-cli connect 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  185.62.57.207
+lightning-cli fundchannel 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  50000
+lightning-cli connect 0256124bcee83d67d0a0e781509ec5b8b58eb374d46dd93f811575b6c8268e4616  185.62.57.207
+```
+
 
 
 Forked from Komodo-in-a-Box
