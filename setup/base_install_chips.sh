@@ -126,7 +126,7 @@ if [ ! -d $HOME/bet ] ; then
 	cd $HOME
 	echo "Installing some dependencies - might ask for sudo password"
 	sleep 3
-	sudo apt-get install software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake ninja-build libsqlite3-dev libgmp3-dev
+	sudo apt-get install -y software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake ninja-build libsqlite3-dev libgmp3-dev
 	echo "Cloning nng"
 	sleep 2
 	cd $HOME
@@ -158,7 +158,7 @@ if [ ! -d $HOME/bet ] ; then
 	cd $HOME
 	echo "Installing some dependencies - might ask for sudo password"
 	sleep 3
-	sudo apt-get install software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake ninja-build libsqlite3-dev libgmp3-dev
+	sudo apt-get install -y software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake ninja-build libsqlite3-dev libgmp3-dev
 	echo "Cloning nng"
 	sleep 2
 	cd $HOME
