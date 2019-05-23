@@ -1,7 +1,7 @@
 function getinfo {
   METHOD="getinfo"
-  if ps aux | grep -i $CHAIN | grep -v grep ; then
-    source ~/.komodo/$CHAIN/$CHAIN.conf
+  if ps aux | grep -i chipsd | grep -v grep ; then
+    source ~/.$CHAIN/$CONFIG.conf
     curl -s --user $rpcuser:$rpcpassword --data-binary "{\"jsonrpc\": \"1.0\", \"id\": \"curltest\", \"method\": \"$METHOD\", \"params\": []}" -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result' > ~/.$METHOD
     MSGBOXINFO=`cat ~/.$METHOD`
     message_box "$METHOD" "$MSGBOXINFO"
@@ -13,7 +13,7 @@ function getinfo {
 
 function stop {
   if ps aux | grep -i $CHAIN | grep -v grep ; then
-    source ~/.komodo/$CHAIN/$CHAIN.conf
+    source ~/.$CHAIN/$CONFIG.conf
     RESULT=`curl -s --user $rpcuser:$rpcpassword --data-binary '{"jsonrpc": "1.0", "id": "curltest", "method": "stop", "params": []}' -H 'content-type: text/plain;' http://127.0.0.1:$rpcport/ | jq -r '.result'`
     echo "Result: $RESULT"
     sleep 2

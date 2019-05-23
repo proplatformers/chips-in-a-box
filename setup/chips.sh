@@ -49,9 +49,11 @@ lightningd --alias friendlyalias --ipaddr=xxx.xxx.xxx.xxx --rgb aabbcc --log-lev
 }
 
 function stop_chips {
-echo "Not Implemented"
 echo "Stop chips"
 sleep 2
+CHAIN="chips"
+CONFIG="chips"
+stop
 }
 
 function getinfo_chips {
