@@ -2,9 +2,15 @@
 # This is the entry point for configuring the system.
 #####################################################
 INSTALL_DIR=`pwd`
-#sudo apt-get update
-#sudo apt-get -y install libgomp1 jq dialog
+
 source setup/functions.sh # load our functions
+
+if [ ! -f /usr/bin/dialog ] || [ ! -f /usr/bin/python3 ] || [ ! -f /usr/bin/pip3 ]; then
+	echo Installing packages needed for setup...
+	apt-get -q -q update
+	apt_get_quiet install dialog python3 python3-pip  || exit 1
+fi
+
 mkdir -p ~/bin
 
 # Put a start script in a global location. We tell the user to run 'chipsinabox'
