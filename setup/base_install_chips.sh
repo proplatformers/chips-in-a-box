@@ -15,7 +15,6 @@ CHIPS "CHIPS - install the decentralized peer-to-peer blockchain backend" \
 LIGHTNING "LIGHTNING - install lightning for cheap microtransactions" \
 PANGEA "PANGEA - install the front end GUI web application" \
 BETREST "BET - install the pangea backend rest_dev branch" \
-#BETPOKER "BET - install the pangea backend poker branch" \
 STARTSERVING "Start serving the front end" \
 Back "Go back in the menu" 2>"${INPUT}"
 
@@ -38,7 +37,6 @@ done
 function install_lightning {
 if [ ! -d $HOME/lightning ] ; then
 	cd $HOME
-
 	echo "Cloning the lightning repository from https://github.com/jl777/lightning"
 	sleep 2
 	hide_output git clone https://github.com/jl777/lightning
@@ -58,12 +56,12 @@ fi
 }
 
 function install_chips {
+	echo "Installing chips begin"
 if [ ! -d $HOME/chips3 ] ; then
 	cd $HOME
 	echo "Installing CHIPS dependencies...might need sudo to apt-get install some packages"
 	sleep 2
 	sudo apt-get -y install software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake libboost-all-dev automake jq libwebsockets-dev
-	
 	echo "Cloning chips source code from https://github.com/jl777/chips3"
 	sleep 2
 	hide_output git clone https://github.com/jl777/chips3.git
