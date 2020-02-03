@@ -61,7 +61,7 @@ if [ ! -d $HOME/chips3 ] ; then
 	cd $HOME
 	echo "Installing CHIPS dependencies...might need sudo to apt-get install some packages"
 	sleep 2
-	sudo apt-get -y install software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake libboost-all-dev automake jq libwebsockets-dev
+	sudo apt-get -y install software-properties-common autoconf git wget build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake libboost-all-dev automake jq libwebsockets-dev
 	echo "Cloning chips source code from https://github.com/jl777/chips3"
 	sleep 2
 	hide_output git clone https://github.com/jl777/chips3.git
