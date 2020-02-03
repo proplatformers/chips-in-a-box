@@ -15,7 +15,7 @@ CHIPS "CHIPS - install the decentralized peer-to-peer blockchain backend" \
 LIGHTNING "LIGHTNING - install lightning for cheap microtransactions" \
 PANGEA "PANGEA - install the front end GUI web application" \
 BETREST "BET - install the pangea backend rest_dev branch" \
-BETPOKER "BET - install the pangea backend poker branch" \
+#BETPOKER "BET - install the pangea backend poker branch" \
 STARTSERVING "Start serving the front end" \
 Back "Go back in the menu" 2>"${INPUT}"
 
