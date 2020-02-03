@@ -125,6 +125,16 @@ if [ ! -d $HOME/bet ] ; then
 	echo "Installing some system dependencies - might ask for sudo password"
 	sleep 3
 	sudo apt-get install -y software-properties-common autoconf git build-essential libtool libprotobuf-c-dev libgmp-dev libsqlite3-dev python python3 zip jq libevent-dev pkg-config libssl-dev libcurl4-gnutls-dev cmake ninja-build libsqlite3-dev libgmp3-dev
+	cd $HOME
+	git clone https://github.com/sg777/libwebsockets.git
+	echo "Building libwebsockets, 1-2 minutes max.  Might need sudo password"
+	sleep 2
+	cd libwebsockets
+	mkdir build
+	cd build
+	cmake ..
+	make && sudo make install
+	sudo ldconfig /usr/local/lib
 	echo "Cloning nng"
 	sleep 2
 	cd $HOME
@@ -137,16 +147,6 @@ if [ ! -d $HOME/bet ] ; then
 	ninja
 	ninja test
 	sudo ninja install
-	cd $HOME
-	git clone https://github.com/sg777/libwebsockets.git
-	echo "Building libwebsockets, 1-2 minutes max.  Might need sudo password"
-	sleep 2
-	cd libwebsockets
-	mkdir build
-	cd build
-	cmake ..
-	make && sudo make install
-	sudo ldconfig /usr/local/lib
 	echo "Cloning sg777's bet repo from https://github.com/sg777/bet"
 	sleep 2
 	cd $HOME
